@@ -11,11 +11,11 @@
 #include "bluepoint.h"
 
 
-	char orig[128] = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
-	char copy[128] = "";
-	//char pass[128] = "01234456789";
-	//char pass[128] = "0123445678901234456789012344567890";
-	char pass[128] = "1";
+char orig[128] = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
+char copy[128] = "";
+//char pass[128] = "01234456789";
+//char pass[128] = "0123445678901234456789012344567890";
+char pass[128] = "1";
 
 int main(int argc, char *argv[])
 

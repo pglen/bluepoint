@@ -28,9 +28,6 @@
 //#
 //# -------------------------------------------------------------------------
 
-// This is to enable full encryption
-#define  FULL_ENCRYPT 1
-
 typedef  unsigned long ulong;
 
 int	bluepoint2_encrypt(char *buff, int blen, char *pass, int plen);
@@ -65,9 +62,14 @@ int     bluepoint2_set_debug(int flag);
 
 int     bluepoint2_set_rounds(int xrounds);
 
+// High security block encryption
+
+#define HS_BLOCK 1024
+
+void hs_encrypt(void *mem, int size2, void *pass, int plen);
+void hs_decrypt(void *mem, int size2, void *pass, int plen);
+
 // EOF
-
-
 
 
 

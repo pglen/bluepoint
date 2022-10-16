@@ -1,0 +1,6 @@
+Bluepoint Version:  1.0
+Builddate:          Sun Nov 18 13:48:25 2018
+
+org: 'Hello, this is a test string.'
+enc: '7da616921ff28a650e79327c558fa4348a788b14b8cfac338f8a35882e'
+dec: 'Hello, this is a test string.'

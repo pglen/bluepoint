@@ -5,14 +5,41 @@
 #include "stdlib.h"
 #include "stdio.h"
 #include "string.h"
+#include "getopt.h"
 
 #define DEF_DUMPHEX  1   // undefine this if you do not want bluepoint2_dumphex
 #include "bluepoint2.h"
 
+int verbose = 0;
+
+char tmp[1000] = "";
+char tmp2[1000] = "";
+int tmplen2 = 0;
 char cyph[1000] = "";
 char orig[1000] = "abcdefghijklmnopqrstuvwxyz";
 char pass[128] = "1234";
 int slen, plen;
+
+void help()
+
+{
+    printf("\nUsage: decrypt_blue [options] [cyphertext] \n");
+    printf("\nOptions: \n");
+    printf("       -p password   --pass password\n");
+    printf("       -v            --verbose\n");
+    printf("\n");
+}
+
+
+static struct option long_options[] = {
+   {"help", 0, 0, 0},
+   {"pass", 1, 0, 0},
+   {"file", 1, 0, 0},
+   {0, 0, 0, 0}
+	};
+
+//static char options[] = "abcd:012fhio:lmnpqrstvy";
+static char options[] = "p:v";
 
 int main(int argc, char *argv[])
 
@@ -20,24 +47,82 @@ int main(int argc, char *argv[])
     long hh;
     int len = sizeof(cyph);
 
-    strncpy(cyph, orig, sizeof(cyph));
-    slen = strlen(orig);  plen = strlen(pass);
-    bluepoint2_encrypt(cyph, slen, pass, plen);
+    // Parse options
+    while (1)
+        {
+        //int this_option_optind = optind ? optind : 1;
+        int opt_index = 0;
+        int cc = getopt_long (argc, argv, options, long_options, &opt_index);
+        if (cc == -1)
+           break;
+        switch (cc)
+           {
+           case 0:
+               //printf ("long option %s", long_options[opt_index].name);
+               //if (optarg)
+               //    printf (" with arg %s", optarg);
+               //printf ("\n");
 
-    if(argc > 1)
-        {
-        //printf("argv[1]=%s\n", argv[1]);
-        bluepoint2_fromhex(argv[1], strlen(argv[1]), cyph, &len);
-        //bluepoint2_tohex(orig, tmplen, tmp2, &tmplen2);
-        //printf("undump %s\n",tmp2);
+                if(strcmp(long_options[opt_index].name, "help") == 0)
+                    {
+                    help();
+                    exit(0);
+                    }
+                if(strcmp(long_options[opt_index].name, "pass") == 0)
+                    {
+                    strncpy(pass, optarg, sizeof(pass));
+                    }
+            break;
+
+            case 'v':
+                //printf ("option v %s\n", optarg);
+                verbose = 1;
+            break;
+
+            case 'p':
+                strncpy(pass, optarg, sizeof(pass));
+                //printf ("option p %s\n", optarg);
+            break;
+
+            case '?':
+               //printf ("Invalid option ? %s\n", optarg);
+               help();
+               exit(1);
+            break;
+            }
         }
-    if(argc > 2)
+
+    int offs = 0;
+    if(argc > optind)
         {
-        //printf("argv[2]=%s\n",argv[2]);
-        strncpy(pass, argv[2], sizeof(pass));
+        //printf("argv[1]='%s'\n", argv[1]);
+        strncpy(tmp, argv[optind], sizeof(tmp));
+        offs = strlen(tmp);
         }
+    else
+        {
+        // We got pipe
+        while(1)
+            {
+            if(offs >= sizeof(tmp))
+                break;
+            if(feof(stdin))
+                break;
+            char chh = 0;
+            int ret = fread(&chh, 1, 1, stdin);
+            if(chh != '\n')
+                {
+                tmp[offs] = chh;
+                offs++;
+                }
+            }
+        }
+
+     if(verbose)
+        printf("in: %d '%s'\n", offs, tmp);
+
+    bluepoint2_fromhex(tmp, offs, cyph, &len);
     slen = len; plen = strlen(pass);
-    //memcpy(copy, tmp, sizeof(tmp));
     bluepoint2_decrypt(cyph, slen, pass, plen);
     printf("%s\n", cyph);
 
