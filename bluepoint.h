@@ -28,40 +28,14 @@
 //#
 //# -------------------------------------------------------------------------
 
-
-// Soft define
-
-#ifndef ulong
 typedef  unsigned long ulong;
-#endif
 
-#ifndef ROTATE_LONG_RIGHT
-
-#define     ROTATE_LONG_RIGHT(x, n) (((x) >> (n))  | ((x) << (32 - (n))))
-#define     ROTATE_LONG_LEFT(x, n) (((x) << (n))  | ((x) >> (32 - (n))))
-#define     ROTATE_CHAR_RIGHT(x, n) (((x) >> (n))  | ((x) << (8 - (n))))
-#define     ROTATE_CHAR_LEFT(x, n) (((x) << (n))  | ((x) >> (8 - (n))))
-
-#endif
-
-// Soft define ends
-
-//# maximum key length (bytes)
-
- #define    PASSLIM     32
-
-
-void    bluepoint_encrypt(char *buff, int blen, const char *pass, int plen);
-void    bluepoint_decrypt(char *str, int slen, const char *pass, int plen);
+void	bluepoint_encrypt(char *buff, int blen, char *pass, int plen);
+void	bluepoint_decrypt(char *str, int slen, char *pass, int plen);
 ulong   bluepoint_hash(char *buff, int blen);
 ulong   bluepoint_crypthash(char *buff, int blen, char *pass, int plen);
 
 #ifdef DEF_DUMPHEX
-char    *bluepoint_dumphex(const char *str, int len);
+char 	*bluepoint_dumphex(char *str, int len);
 #endif
-
-char    *bluepoint_tohex(char *str, int len, char *out, int *olen);
-char    *bluepoint_fromhex(char *str, int len, char *out, int *olen);
-
-
 
