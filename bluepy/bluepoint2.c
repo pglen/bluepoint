@@ -52,37 +52,23 @@
 // Porting is correct if the new cypher text and hash is a duplicate of the following:
 //
 // orignal='abcdefghijklmnopqrstuvwxyz' pass='1234'
-// ENCRYPTED:
+// ENCRYPTED: 
 // -d7-a2-55-bf-ec-3c-f6-e5-2d-ef-06-93-79-91-eb-2d-2a-f1-69-4a-59-e9-48-6f-61-05
 // END ENCRYPTED
 // HASH:
 // 3540310577 0xd304da31
-// CRYPTHASH:
+// CRYPTHASH: 
 // 3349887638 0xc7ab3a96
 // HASH64:
 // 17370781859372208493 0xf1116a1116ae116d
-// CRYPTHASH64:
+// CRYPTHASH64: 
 // 16348308407135931823 0xe2e0dbe115de8daf
 
 ///////////////////////////////////////////////////////////////////////////
 
-#define _GNU_SOURCE
-
-#include <fuse.h>
-#include <ulockmgr.h>
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <limits.h>
-#include <string.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <dirent.h>
-#include <errno.h>
-#include <syslog.h>
-#include <sys/time.h>
-
-#include "stddef.h"
+#include "stdio.h"
+#include "string.h"
+#include "stdlib.h"
 
 #define DEF_DUMPHEX  1   // undefine this if you do not want bluepoint2_dumphex
 
@@ -108,9 +94,7 @@
 #define     ROTATE_CHAR_RIGHT(x, n) (((x) >> (n))  | ((x) << (8 - (n))))
 #define     ROTATE_CHAR_LEFT(x, n) (((x) << (n))  | ((x) >> (8 - (n))))
 
-#include "../src/hsencfs.h"
-#include "bluepoint2.h"
-#include "hs_crypt.h"
+#include "hs_crypt.c"
 #include "bluemac.h"
 
 static  void    do_encrypt(char *str, int slen, char *pass, int plen);
@@ -187,12 +171,12 @@ int def_stack()
     MIXIT2(+)   MIXIT2R(+)
     PASSLOOP(+) FWLOOP(+)
     HECTOR(+)   FWLOOP(+)
-    //MIXIT(+)
+    //MIXIT(+)    
     MIXITR(+)
     BWLOOP(+)   HECTOR(+)
 }
 #endif
-
+           
 //# -------------------------------------------------------------------------
 //# Use: encrypt($str, $password);
 
@@ -209,20 +193,20 @@ int    bluepoint2_encrypt(char *buff, int blen, char *pass, int plen)
             }
         blen --; ret = 1;
         }
-
+        
     if(plen == 0 || blen == 0)
         {
         if(verbose)
             {
             printf("bluepoint2_encrypt zero length pass / data %d %d\n", plen, blen);
             }
-        return 0;
+        return ret;
         }
 
    if(functrace)
        {
-       printf("bluepoint2_encrypt\nbuff=%s ", bluepoint2_dumphex(buff, 30));
-       printf("pass=%s\n", bluepoint2_dumphex(pass, 30) );
+       printf("bluepoint2_encrypt\nbuff=%s\n", bluepoint2_dumphex(buff, blen));
+       printf("pass=%s\n", bluepoint2_dumphex(pass, plen) );
        }
 
     prep_pass(pass, plen, newpass);
@@ -231,7 +215,7 @@ int    bluepoint2_encrypt(char *buff, int blen, char *pass, int plen)
         {
         do_encrypt(buff, blen, newpass, passlim);
         }
-
+        
    return ret;
 }
 
@@ -242,7 +226,7 @@ int    bluepoint2_decrypt(char *buff, int blen, char *pass, int plen)
 
 {
     int ret = 0; char newpass[passlim]; int loop;
-
+    
     if (blen % 2)
         {
         if(verbose)
@@ -258,13 +242,13 @@ int    bluepoint2_decrypt(char *buff, int blen, char *pass, int plen)
             {
             printf("bluepoint2_decrypt zero length pass / data %d %d\n", plen, blen);
             }
-        return 0;
+        return ret;
         }
 
     if(functrace)
         {
-        printf("bluepoint2_decrypt()\nbuff=%s ",bluepoint2_dumphex(buff, 30));
-        printf("pass=%s\n", bluepoint2_dumphex(pass, 30) );
+        printf("bluepoint2_decrypt()\nbuff=%s\n",bluepoint2_dumphex(buff, blen));
+        printf("pass=%s\n", bluepoint2_dumphex(pass, plen) );
         }
 
     prep_pass(pass, plen, newpass);
@@ -282,38 +266,25 @@ int    bluepoint2_decrypt(char *buff, int blen, char *pass, int plen)
 void    prep_pass(char *pass, int plen, char *newpass)
 
 {
-    char vec2[passlim];
+    int loop; char vec2[passlim];
 
     // Duplicate vector
     int vlen = strlen(vector);
     strcpy(vec2, vector);
     newpass[0] = 0;
 
-    int loop = 0, loop2 = 0;
-    while(1==1)
+    int loop2 = 0;
+    for(loop = 0; loop < passlim; loop++)
         {
-        if(loop >= passlim)
-            break;
         newpass[loop] = pass[loop2];
-        loop++;
-        loop2++;
-
-        // Increment, pad, wrap
-        if (loop2 >= plen)
-            {
-            newpass[loop] = ',';
-            loop++;
-            if(loop >= passlim)
-                break;
-            loop2 = 0;
-            }
+        // Increment, wrap
+        loop2++; if (loop2 >= plen) loop2 = 0;
         }
-
     // Terminate
     newpass[passlim] = 0;
 
     if(verbose)
-        printf("prep_pass() newpass: %s\n", bluepoint2_dumphex(newpass, passlim));
+        printf("prep_pass() newpass: %s\n", newpass);
 
 #ifndef NOPASSCRYPT
     do_encrypt(vec2, vlen, vector, vlen);
@@ -347,14 +318,14 @@ ulong   bluepoint2_hash(char *buff, int blen)
 {
     unsigned long    sum = 0;
     int     loop;
-    char    aa, aa2, aa3;
+    //char    aa, aa2, aa3;
 
     for (loop = 0; loop < blen; loop++)
         {
         sum ^= (unsigned char)buff[loop];
-        //sum = ROTATE_LONG_RIGHT(sum, 1);          /* rotate right */
-        sum = ROTATE_LONG_LEFT(sum, 3);
+        sum = ROTATE_LONG_RIGHT(sum, 10);          /* rotate right */
         }
+
     return sum;
 }
 
@@ -420,25 +391,25 @@ unsigned long long bluepoint2_crypthash64(char *buff, int blen, char *pass, int 
 
 void    ENCRYPT(char *str, int slen, char *pass, int plen)
 {
-    int loop, loop2 = 0;  unsigned char  aa, bb, cc;
-
+    int loop, loop2 = 0;  unsigned char  aa, bb; //, cc;
+    
     PASSLOOP(+)
     MIXIT2(+)   MIXIT2R(+)
     HECTOR(+)   FWLOOP(+)
     MIXIT2(+)   MIXIT2R(+)
     PASSLOOP(+) FWLOOP(+)
     HECTOR(+)   FWLOOP(+)
-    //MIXIT(+)
+    //MIXIT(+)    
     MIXITR(+)
     BWLOOP(+)   HECTOR(+)
-}
+}   
 
 void    DECRYPT(char *str, int slen, char *pass, int plen)
 {
     int loop, loop2 = 0; unsigned char aa, bb, cc;
-
+    
     HECTOR(-)   BWLOOP2(-)
-    MIXITR(-)
+    MIXITR(-)   
     //MIXIT(-)
     FWLOOP2(-)  HECTOR(-)
     FWLOOP2(-)  PASSLOOP(-)
@@ -487,17 +458,17 @@ static unsigned char buff[2048];
 char    *bluepoint2_dumphex(char *str, int len)
 
 {
-    buff[0] = 0;  int loop = 0, pos = 0;
+    buff[0] = 0;  int loop = 0;
+    unsigned int pos = 0;
 
     if(verbose)
         {
-        //printf("bluepoint2_dumphex str=%p len=%d ", str, len);
+        printf("bluepoint2_dumphex str=%p len=%d ", str, len);
         }
 
     for (loop = 0; loop < len; loop++)
         {
-        //pos += sprintf(buff + pos, "-%02x", ( unsigned char)str[loop]);
-        pos += sprintf(buff + pos, "%02x", ( unsigned char)str[loop]);
+        pos += sprintf((char*)buff + pos, "-%02x", ( unsigned char)str[loop]);
 
         if(pos >= (sizeof(buff) - 8))
             {
@@ -510,7 +481,7 @@ char    *bluepoint2_dumphex(char *str, int len)
             }
         }
     buff[pos] = '\0';
-    return(buff);
+    return((char*)buff);
 }
 
 //# -------------------------------------------------------------------------
@@ -520,8 +491,9 @@ char    *bluepoint2_dumphex(char *str, int len)
 char    *bluepoint2_dump(char *str, int len)
 
 {
-    buff[0] = 0;  int loop = 0, pos = 0;
-
+    buff[0] = 0;  int loop = 0;
+    unsigned int pos = 0;
+    
     if(verbose)
         {
         printf("bluepoint2_dump str=%p len=%d ", str, len);
@@ -529,7 +501,7 @@ char    *bluepoint2_dump(char *str, int len)
 
     for (loop = 0; loop < len; loop++)
         {
-        pos += sprintf(buff + pos, "%02x", ( unsigned char)str[loop]);
+        pos += sprintf((char*)buff + pos, "%02x", ( unsigned char)str[loop]);
 
         if(pos >= (sizeof(buff) - 8))
             {
@@ -542,7 +514,7 @@ char    *bluepoint2_dump(char *str, int len)
             }
         }
     buff[pos] = '\0';
-    return(buff);
+    return((char*)buff);
 }
 
 //# -------------------------------------------------------------------------
@@ -552,7 +524,8 @@ char    *bluepoint2_dump(char *str, int len)
 char    *bluepoint2_undump(char *str, int len)
 
 {
-    buff[0] = 0;  int loop = 0, pos = 0;
+    buff[0] = 0;  int loop = 0;
+    unsigned int pos = 0;
     unsigned int val = 0;
 
     if(verbose)
@@ -575,7 +548,7 @@ char    *bluepoint2_undump(char *str, int len)
         }
     //printf("\n");
 
-    return(buff);
+    return((char*)buff);
 }
 
 #endif
@@ -606,7 +579,7 @@ char    *bluepoint2_tohex(char *str, int len, char *out, int *olen)
 char    *bluepoint2_fromhex(char *str, int len, char *out, int *olen)
 
 {
-    unsigned char *str2 = (unsigned char *)str;
+    //unsigned char *str2 = (unsigned char *)str;
 
     char chh[3]; chh[2] = 0;
 
@@ -633,7 +606,9 @@ char    *bluepoint2_fromhex(char *str, int len, char *out, int *olen)
     return(out);
 }
 
-// EOF
+
+
+
 
 
 

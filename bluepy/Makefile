@@ -1,39 +1,68 @@
 # ------------------------------------------------------------------------
-# Makefile for bluepoint2 python module
+# Makefile for bluepoint python module. Python 2 version.
 #
-# Simplified for CentOS compile. Edit path for your system.
+# a.) Simplified for CentOS compile. Edit path for your system.
+# b.) Rebilding on MSYS2
+#
 
-COPT = -DNDEBUG -g -O3 -Wall -Wstrict-prototypes -fPIC -DMAJOR_VERSION=1 \
-    -DMINOR_VERSION=0 -I/usr/include/pygtk-2.0 -I/usr/include/glib-2.0 \
-        -I/usr/include/python2.6 -I/usr/local/lib/glib-2.0/include \
-            -I/usr/include/libxml2 -I/usr/include/gnome-vfs-2.0 \
-             -I/usr/lib/gnome-vfs-2.0/include -I/usr/include/gconf/2 \
-              -I/usr/include/orbit-2.0 -I/usr/include/dbus-1.0 \
-                -I/usr/lib/dbus-1.0/include  
-                
-# This way inference rules can be used.                
-CFLAGS=${COPT}
+#COPT =  -DNDEBUG -m32 -g -O3 -Wall -Wstrict-prototypes -fPIC -DMAJOR_VERSION=1 \
+#    -DMS_WIN32 -DMINOR_VERSION=0 -I/mingw32/include/python2.7
+#
+# This way inference rules can be used.
+#CFLAGS=${COPT}
 
-# Add targets here
-TARGS = ../bluepoint2.o bluepy.o
+# We build with buildutils
 
 # ------------------------------------------------------------------------
 
-all:  bluepy.so
+all:
+	@echo Targets: build test test3 git clean deb
 
-../bluepoint2.o:
-	make -C ..
+# the .so targets
 
-bluepy.so:  ${TARGS} Makefile
-	./bdate.py > bdate.h
-	gcc -shared  ${TARGS} -L/usr/local/lib  -o bluepy.so    
+bluepy_c.so:  bluepy_c.c bluepoint2.c
+	@python buildme.py
+
+bluepy3_c.so: bluepy_c.c  bluepoint2.c
+	@python3 buildme3.py
+
+# Building modules:
+
+build: bluepy_c.so
+
+build3: bluepy3_c.so
+
+# Testing modules:
+
+test: build
+	@echo Diffs should be silent
+	@python bluetest.py >cc
+	@diff -w test.org cc
+	@python bluefile.py -e -f -p 1111 Makefile aa
+	@python bluefile.py -d -f -p 1111 aa bb
+	@diff Makefile bb
+	@rm -f aa bb cc dd ee
+
+test3: build3
+	@echo Diffs should be silent
+	@python3  bluetest.py >cc
+	@diff -w test.org cc
+	@python3 ./bluefile.py -e -f -p 1111 Makefile aa
+	@python3 ./bluefile.py -d -f -p 1111 aa bb
+	@diff Makefile bb
+	@rm -f aa bb cc dd ee
+
+git:
+	@git add .
+	@git commit -m autocheck
 
 clean:
-	rm *.o
+	@rm -f aa bb cc dd ee
+	@rm -f *.o
+	@rm -f *.so
+	@rm -f *.pyd
+	@rm -f *.dll
+	@rm -f *.pyc
+	@rm -rf ./build/*
 
-
-
-
-
-
-
+# EOF
