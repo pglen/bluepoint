@@ -1,1 +1,2 @@
-make: *** No rule to make target `clean'.
+rm: cannot remove `test_blue': No such file or directory
+make: *** [clean] Error 1

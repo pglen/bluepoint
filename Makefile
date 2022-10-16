@@ -1,9 +1,10 @@
 # Makefile
 
-
 test_blue: test_blue.c bluepoint.c bluepoint.h
-	cc test_blue.c bluepoint.c -o test_blue
+	cc -g test_blue.c bluepoint.c -o test_blue -lefence
 
+clean:
+	rm test_blue;
 
 
 

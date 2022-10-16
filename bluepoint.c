@@ -82,6 +82,12 @@
 // -1382909316  0xad927a7c
 //
 ///////////////////////////////////////////////////////////////////////////
+// History:
+
+// 08-Apr-2008 Adapted to visual C++
+// 10-Apr-2008 Defence for longer passwords
+//
+///////////////////////////////////////////////////////////////////////////
 
 #include "stdio.h"
 #include "string.h"
@@ -99,21 +105,16 @@
 
 #include "bluepoint.h"
 
-#define     ROTATE_LONG_RIGHT(x, n) (((x) >> (n))  | ((x) << (32 - (n))))
-#define     ROTATE_LONG_LEFT(x, n) (((x) << (n))  | ((x) >> (32 - (n))))
-
-#define     ROTATE_CHAR_RIGHT(x, n) (((x) >> (n))  | ((x) << (8 - (n))))
-#define     ROTATE_CHAR_LEFT(x, n) (((x) << (n))  | ((x) >> (8 - (n))))
-
 static  void    do_encrypt(char *str, int slen, char *pass, int plen);
 static  void    do_decrypt(char *str, int slen, char *pass, int plen);
-static  void    prep_pass(char *pass, int plen, char *newpass);
+static  void    prep_pass(const char *pass, int plen, char *newpass);
 
 //# -------------------------------------------------------------------------
 //# These vars can be set to make a custom encryption:
 
 char vector[]  = "crypt";              //# influence encryption algorythm
-int passlim    = 32;                   //# maximum key length (bytes)
+
+//int passlim    = 32;                    //# maximum key length (bytes)
 
 char    forward    = 0x55;             //# Constant propagated on forward pass
 char    backward   = 0x5a;             //# Constant propagated on backward pass
@@ -128,10 +129,10 @@ int functrace  = 0;                    //# Specify this to show function args
 //# -------------------------------------------------------------------------
 //# Use: encrypt($str, $password);
 
-void    bluepoint_encrypt(char *buff, int blen, char *pass, int plen)
+void    bluepoint_encrypt(char *buff, int blen, const char *pass, int plen)
 
 {
-    char newpass[2 * passlim];
+    char newpass[4 * PASSLIM];
 
     if(plen == 0 || blen == 0)
         {
@@ -146,16 +147,16 @@ void    bluepoint_encrypt(char *buff, int blen, char *pass, int plen)
 
     prep_pass(pass, plen, newpass);
 
-    do_encrypt(buff, blen, newpass, passlim);
+    do_encrypt(buff, blen, newpass, PASSLIM);
 }
 
 //# -------------------------------------------------------------------------
 //# Use: bluepoint_decrypt($str, $password);
 
-void    bluepoint_decrypt(char *buff, int blen, char *pass, int plen)
+void    bluepoint_decrypt(char *buff, int blen, const char *pass, int plen)
 
 {
-    char newpass[2 * passlim];
+    char newpass[4 * PASSLIM];
 
     if(plen == 0 || blen == 0)
         {
@@ -170,33 +171,47 @@ void    bluepoint_decrypt(char *buff, int blen, char *pass, int plen)
 
     prep_pass(pass, plen, newpass);
 
-    do_decrypt(buff, blen, newpass, passlim);
+    do_decrypt(buff, blen, newpass, PASSLIM);
 }
 
 ///////////////////////////////////////////////////////////////////////////
 // Prepare pass
 
-void    prep_pass(char *pass, int plen, char *newpass)
+void    prep_pass(const char *pass, int plen, char *newpass)
 
 {
     int loop;
-    char vec2[passlim];
+    char vec2[PASSLIM + 1];
+
+    memset(vec2, 0, sizeof(vec2));
 
     // Duplicate vector
     int vlen = strlen(vector);
     strcpy(vec2, vector);
+    vec2[PASSLIM] = 0;
+
     newpass[0] = 0;
 
-    for(loop = 0; loop < passlim / plen + 1; loop++)
+    // Expand/truncate pass to fit:
+    if(plen >= PASSLIM)
         {
-        strcat(newpass, pass);
-        strcat(newpass, "_");
+        strncpy(newpass, pass, PASSLIM);
+        }
+    else
+        {
+        for(loop = 0; loop < PASSLIM / plen; loop++)
+            {
+            strncat(newpass, pass, plen);
+            strcat(newpass, "_");
+            }
         }
 
-    newpass[passlim] = 0;
+    newpass[PASSLIM] = 0;
+
+    //debugprintf("newpass '%s'", newpass);
 
     if(verbose)
-        printf("prep_pass() newpass: %s\n", newpass);
+        printf("prep_pass() newpass: '%s'\n", newpass);
 
 #ifndef NOPASSCRYPT
     do_encrypt(vec2, vlen, vector, vlen);
@@ -210,8 +225,21 @@ void    prep_pass(char *pass, int plen, char *newpass)
         }
 
 #ifndef NOPASSCRYPT
-    do_encrypt(newpass, passlim, vec2, vlen);
+    do_encrypt(newpass, PASSLIM, vec2, vlen);
 #endif
+
+    //char  out[2 * PASSLIM + 1];
+    //int loop2;
+    //for(loop2 = 0; loop2 < 2 * PASSLIM; loop2 += 2)
+    //    {
+    //    unsigned char hi = ((unsigned char)(newpass[loop2 / 2] )) >> 4;
+    //    unsigned char lo = (unsigned char) ((newpass[loop2 / 2] & 0xf));
+    //
+    //    out[loop2] = hi <= 9 ? hi + '0' : hi + ('a' - 10);
+    //    out[loop2 + 1] = lo <= 9 ? lo + '0' : lo + ('a' - 10);
+    //    }
+    //out[2 * PASSLIM] = 0;
+    //debugprintf("newpass: '%s'", out);
 
 }
 
@@ -396,9 +424,9 @@ void    do_decrypt(char *str, int slen, char *pass, int plen)
 
 #ifdef DEF_DUMPHEX
 
-char buff[256];
+char buff[4096];
 
-char    *bluepoint_dumphex(char *str, int len)
+char    *bluepoint_dumphex(const char *str, int len)
 
 {
     buff[0] = 0;
