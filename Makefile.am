@@ -1,6 +1,8 @@
 # ========================================================================
 # Makefile for bluepoint
 
+bin_PROGRAMS =   benc2 bdec2 test_blue2 encrypt_blue2 decrypt_blue2
+
 all: tools
 
 help:
