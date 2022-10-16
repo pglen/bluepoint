@@ -13,11 +13,11 @@
 int verbose = 0;
 
 char tmp[1000] = "";
-char tmp2[1000] = "";
-int tmplen2 = 0;
 char cyph[1000] = "";
 char orig[1000] = "abcdefghijklmnopqrstuvwxyz";
 char pass[128] = "1234";
+
+int  tmplen2 = 0;
 int slen, plen;
 
 void help()
@@ -41,11 +41,12 @@ static struct option long_options[] = {
 //static char options[] = "abcd:012fhio:lmnpqrstvy";
 static char options[] = "p:v";
 
-int main(int argc, char *argv[])
+int     main(int argc, char *argv[])
 
 {
     long hh;
     int len = sizeof(cyph);
+    memset(tmp, '\0', sizeof(tmp));
 
     // Parse options
     while (1)
@@ -97,7 +98,6 @@ int main(int argc, char *argv[])
         {
         //printf("argv[1]='%s'\n", argv[1]);
         strncpy(tmp, argv[optind], sizeof(tmp));
-        offs = strlen(tmp);
         }
     else
         {
@@ -106,6 +106,7 @@ int main(int argc, char *argv[])
             {
             if(offs >= sizeof(tmp))
                 break;
+
             if(feof(stdin))
                 break;
             char chh = 0;
@@ -118,6 +119,8 @@ int main(int argc, char *argv[])
             }
         }
 
+     offs = strlen(tmp);
+
      if(verbose)
         printf("in: %d '%s'\n", offs, tmp);
 
@@ -129,5 +132,4 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-
-
+// EOF
