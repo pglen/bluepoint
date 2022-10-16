@@ -112,18 +112,18 @@ static  void    prep_pass(char *pass, int plen, char *newpass);
 //# -------------------------------------------------------------------------
 //# These vars can be set to make a custom encryption:
 
-char vector[]  = "crypt";              //# influence encryption algorythm
-int passlim    = 32;                   //# maximum key length (bytes)
+static  char vector[]  = "crypt";              //# influence encryption algorythm
+static  int passlim    = 32;                   //# maximum key length (bytes)
 
-char    forward    = 0x55;             //# Constant propagated on forward pass
-char    backward   = 0x5a;             //# Constant propagated on backward pass
-char    addend     = 17;               //# Constant used adding to encrypted values
+static  char    forward    = 0x55;             //# Constant propagated on forward pass
+static  char    backward   = 0x5a;             //# Constant propagated on backward pass
+static  char    addend     = 17;               //# Constant used adding to encrypted values
 
 //# -------------------------------------------------------------------------
 //# These vars can be set show op details
 
-int verbose    = 0;                    //# Specify this to show working details
-int functrace  = 0;                    //# Specify this to show function args
+static  int verbose    = 0;                    //# Specify this to show working details
+static  int functrace  = 0;                    //# Specify this to show function args
 
 //# -------------------------------------------------------------------------
 //# Use: encrypt($str, $password);
@@ -427,6 +427,7 @@ char    *bluepoint_dumphex(char *str, int len)
 }
 
 #endif
+
 
 
 

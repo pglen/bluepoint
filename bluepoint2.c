@@ -154,7 +154,28 @@ int    bluepoint2_set_rounds(int xrounds)
     if (rounds < 1) rounds = 1;
     return old;
 }
-       
+
+#if 0
+
+// The virtual machine stack:
+#define GEN_FUNC(fname, body) \
+    void fname(context) \
+
+static void *vmstack[15];
+int def_stack()
+{
+    vmstack[0] = PASSLOOP(+)
+    MIXIT2(+)   MIXIT2R(+)
+    HECTOR(+)   FWLOOP(+)
+    MIXIT2(+)   MIXIT2R(+)
+    PASSLOOP(+) FWLOOP(+)
+    HECTOR(+)   FWLOOP(+)
+    //MIXIT(+)    
+    MIXITR(+)
+    BWLOOP(+)   HECTOR(+)
+}
+#endif
+           
 //# -------------------------------------------------------------------------
 //# Use: encrypt($str, $password);
 
@@ -165,11 +186,19 @@ int    bluepoint2_encrypt(char *buff, int blen, char *pass, int plen)
 
     if (blen % 2)
         {
+        if(verbose)
+            {
+            printf("bluepoint2_encrypt odd buffer length %d\n", blen);
+            }
         blen --; ret = 1;
         }
         
     if(plen == 0 || blen == 0)
         {
+        if(verbose)
+            {
+            printf("bluepoint2_encrypt zero length pass / data %d %d\n", plen, blen);
+            }
         return;
         }
 
@@ -199,11 +228,19 @@ int    bluepoint2_decrypt(char *buff, int blen, char *pass, int plen)
     
     if (blen % 2)
         {
+        if(verbose)
+            {
+            printf("bluepoint2_encrypt odd buffer length %d\n", blen);
+            }
         blen --; ret = 1;
         }
 
     if(plen == 0 || blen == 0)
         {
+        if(verbose)
+            {
+            printf("bluepoint2_decrypt zero length pass / data %d %d\n", plen, blen);
+            }
         return;
         }
 
@@ -354,13 +391,14 @@ unsigned long long bluepoint2_crypthash64(char *buff, int blen, char *pass, int 
 inline void    ENCRYPT(char *str, int slen, char *pass, int plen)
 {
     int loop, loop2 = 0;  unsigned char  aa, bb, cc;
+    
     PASSLOOP(+)
     MIXIT2(+)   MIXIT2R(+)
     HECTOR(+)   FWLOOP(+)
     MIXIT2(+)   MIXIT2R(+)
     PASSLOOP(+) FWLOOP(+)
     HECTOR(+)   FWLOOP(+)
-    MIXIT(+)    
+    //MIXIT(+)    
     MIXITR(+)
     BWLOOP(+)   HECTOR(+)
 }   
@@ -368,9 +406,10 @@ inline void    ENCRYPT(char *str, int slen, char *pass, int plen)
 inline void    DECRYPT(char *str, int slen, char *pass, int plen)
 {
     int loop, loop2 = 0; unsigned char aa, bb, cc;
+    
     HECTOR(-)   BWLOOP2(-)
     MIXITR(-)   
-    MIXIT(-)
+    //MIXIT(-)
     FWLOOP2(-)  HECTOR(-)
     FWLOOP2(-)  PASSLOOP(-)
     MIXIT2R(-)  MIXIT2(-)
@@ -385,7 +424,7 @@ inline void    DECRYPT(char *str, int slen, char *pass, int plen)
 void    do_encrypt(char *str, int slen, char *pass, int plen)
 
 {
-    if(verbose)
+    if(debug)
         {
         printf( "encrypt str='%s' len=%d pass='%s' plen=%d\n",
                  str, slen, pass, plen);
@@ -399,7 +438,7 @@ void    do_encrypt(char *str, int slen, char *pass, int plen)
 void    do_decrypt(char *str, int slen, char *pass, int plen)
 
 {
-    if(verbose)
+    if(debug)
         {
         printf( "decrypt(inp) str=%s len=%d pass=%s plen=%d\n",
                   str, slen, pass, plen);
@@ -562,6 +601,7 @@ char    *bluepoint2_fromhex(char *str, int len, char *out, int *olen)
     *olen = pos;
     return(out);
 }
+
 
 
 
