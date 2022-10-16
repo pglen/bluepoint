@@ -26,6 +26,13 @@
 #  Please see bit distribution study.
 #
 # -------------------------------------------------------------------------
+#// How to use:
+#//
+#//     $cypher     = bluepoint::encrypt($orig, $pass);
+#//     $orig       = bluepoint::decrypt($cypher, $pass);
+#//     $hash       = bluepoint::hash($orig, $pass);
+#//     $crypthash  = bluepoint::crypthash($orig, $pass);
+#//
 
 package bluepoint;
 
@@ -40,6 +47,12 @@ $backward   = 0x5a;                 # Constant propagated on backward pass
 $addend     = 17;                   # Constant used adding to encrypted values
 
 # -------------------------------------------------------------------------
+# These vars can be set to see internal workings
+
+$verbose = 0;                       # Specify this to show working details
+$functrace = 0;                     # Specify this to show function args
+
+# -------------------------------------------------------------------------
 # Use: encrypt($str, $password);
 
 sub encrypt
@@ -49,18 +62,13 @@ sub encrypt
 
     if(length($_[1]) == 0) { return; }
 
-    #print "encrypt() INP[0]: "; dumpdec($_[0]); print "INP[1]: "; dumpdec($_[1]);
+    if($functrace >= 1)
+        {
+        print "encrypt() INP[0]: "; dumphex($_[0]); print "INP[1]: "; dumphex($_[1]);
+        }
 
-    $pass = substr($_[1] x ($passlim/length($_[1]) + 1), 0, $passlim);
-    print "e PAS1: ";  print($pass); print "\n";
-
-    $vec2 = pl_crypt($vector, $vector);
-    print "e VEC: ";  dumpdec($vec2); print "\n";
-
-    $passwd = pl_crypt($pass, $vec2);
-    print "e PAS2: ";  dumpdec($passwd); print "\n";
-
-    $out = pl_crypt($_[0], $passwd);
+    $pass = prep_pass($_[1]);
+    $out = pl_encrypt($_[0], $pass);
     return $out;
 }
 
@@ -74,15 +82,36 @@ sub decrypt
 
     if(length($_[1]) == 0) { return; }
 
-    #print "decrypt() INP[0]: "; dumpdec($_[0]); print "INP[1]: "; dumpdec($_[1]);
+    if($functrace >= 1)
+        {
+        print "decrypt() INP[0]: "; dumphex($_[0]); print "INP[1]: "; dumphex($_[1]);
+        }
 
-    $pass =  substr($_[1] x ($passlim/length($_[1]) + 1), 0, $passlim);
-    $vec2 = pl_crypt($vector, $vector); $pass = pl_crypt($pass, $vec2);
-
-    #print "d PAS2: ";  dumpdec($pass); print "\n";
-
+    $pass = prep_pass($_[1]);
     $out = pl_decrypt($_[0], $pass);
     return $out;
+}
+
+# -------------------------------------------------------------------------
+# use:  prep_pass($pass)
+
+sub prep_pass
+
+{
+    my($uscore, $vec2);
+
+    $uscore = $_[0] . "_";
+
+    $pass = substr($uscore x ($passlim/length($_[0]) + 1), 0, $passlim);
+    #print "PAS: ";  print($pass); print "\n";
+
+    $vec2 = pl_encrypt($vector, $vector);
+    #print "VEC: ";  dumphex($vec2); print "\n";
+
+    $pass = pl_encrypt($pass, $vec2);
+    #print "e PAS2: ";  dumphex($passwd); print "\n";
+
+    return $pass;
 }
 
 # -------------------------------------------------------------------------
@@ -106,6 +135,13 @@ sub chksum
 # -------------------------------------------------------------------------
 # Hash:
 # use: hashvalue = hash($str)
+#
+# Implementing the following 'C' code
+#
+#   define     ROTATE_LONG_RIGHT(x, n) (((x) >> (n))  | ((x) << (32 - (n))))
+#   ret_val ^= (unsigned long)*name;
+#   ret_val  = ROTATE_LONG_RIGHT(ret_val, 10);          /* rotate right */sub hash
+#
 
 sub hash
 
@@ -116,18 +152,69 @@ sub hash
     for ($loop = 0; $loop < $len; $loop++)
         {
         $aa = ord(substr($_[0], $loop, 1));
-        $aa = $aa * 0x8000 + (($aa / 0x8000) % 0x8000);
-        $sum = $sum  ^ $aa + $bb;
-        $bb = $aa;
+        $sum ^= $aa;
+
+        $sum = rotateR32($sum, 10);
         }
     return $sum;
 }
+
+# ------------------------------------------------------------------------
+
+sub rotateR32
+
+{
+    my($sum, $rot, $out, $sum1);
+
+    $sum1 = $sum = $_[0] + 0; $rot = $_[1] + 0;
+
+    # Shift ONE --> Reset MSB --> Shift the rest
+    if($sum1 & 0x80000000)
+        {
+        $sum1 >>= 1;
+        $sum1 &= ~0x80000000;
+        $sum1 >>= ($rot - 1);
+        }
+    else
+        {
+        $sum1 >>= $rot;
+        }
+    $out = $sum1 | ($sum << (32 - $rot));
+    return $out;
+}
+
+# ------------------------------------------------------------------------
+
+sub rotateR8
+
+{
+    my($sum, $rot);
+
+    $sum = $_[0]; $rot = $_[1];
+    $sum &= 0xff;
+
+    $sum =  (($sum << (8 - $rot)) & 0xff) | (($sum >> $rot) & 0xff);
+    return $sum;
+}
+
+sub rotateL8
+
+{
+    my($sum, $rot);
+
+    $sum = $_[0]; $rot = $_[1];
+    $sum &= 0xff;
+
+    $sum =  (($sum >> (8 - $rot)) & 0xff) | ( ($sum << $rot) & 0xff);
+    return $sum;
+}
+
 
 # -------------------------------------------------------------------------
 # Crypt and hash:
 # use: crypthash = chash($str, "pass")
 
-sub chash
+sub crypthash
 
 {
     my($str, $sum);
@@ -140,7 +227,7 @@ sub chash
 # -------------------------------------------------------------------------
 # The following routines are internal to this module:
 
-sub pl_crypt
+sub pl_encrypt
 
 {
     my ($aa, $bb, $cc, $loop, $loop2, $plen, $len, $out, $out2);
@@ -148,22 +235,31 @@ sub pl_crypt
     $out = ""; $out2 = "";
     $len  = length($_[0]); $plen = length($_[1]);
 
-    #print "pl_crypt(inp) str=$_[0] len=$len pass=$_[1] plen=$plen\n";
+    if($functrace >= 2)
+        {
+        print "pl_encrypt(inp) str=$_[0] len=$len pass=$_[1] plen=$plen\n";
+        }
 
     # Pass loop  (encrypt)
     for ($loop = 0; $loop < $len; $loop++)
         {
         $aa = ord(substr($_[0], $loop, 1));
+
         $aa = $aa ^ ord(substr($_[1], $loop2, 1));
+
+
         $loop2++; if($loop2 >= $plen) {$loop2 = 0;}     #wrap over
         $out .= pack("c", $aa);
         }
+
     # Backward loop (encrypt)
     $bb = 0;
     for ($loop = $len-1; $loop >= 0; $loop--)
         {
         $aa = ord(substr($out, $loop, 1));
+
         $aa = (($aa ^ $backward) + $addend) + $bb;
+
         $bb = $aa;
         substr($out, $loop, 1) = pack("c", $aa);
         }
@@ -172,11 +268,15 @@ sub pl_crypt
     for ($loop = 0; $loop < $len; $loop++)
         {
         $aa = ord(substr($out, $loop, 1));
+
         $aa = (($aa ^ $forward) + $addend) + $bb;
+
+        $aa = rotateR8($aa, 3);
+
         $bb = $aa;
         $out2 .= pack("c", $aa);
         }
-    #print "pl_crypt(out) out2=$out2\n";
+    #print "pl_encrypt(out) out2=$out2\n";
     return($out2);
 }
 
@@ -190,7 +290,10 @@ sub pl_decrypt
 
     $len  = length($_[0]); $plen = length($_[1]);
 
-    #print "pl_decrypt(inp) str=$_[0] len=$len pass=$_[1] plen=$plen\n";
+    if($functrace >= 2)
+        {
+        print "pl_decrypt(inp) str=$_[0] len=$len pass=$_[1] plen=$plen\n";
+        }
 
     $out = ""; $out2 = "";
 
@@ -201,7 +304,11 @@ sub pl_decrypt
         $bb = $cc;
         $aa = ord(substr($_[0], $loop, 1));
         $cc = $aa;
+
+        $aa = rotateL8($aa, 3);
+
         $aa = (($aa - $bb) - $addend) ^ $forward;
+
         $out .= pack("c", $aa);
         }
     # Backward loop  (decrypt)
@@ -211,14 +318,18 @@ sub pl_decrypt
         $bb = $cc;
         $aa = ord(substr($out, $loop, 1));
         $cc = $aa;
+
         $aa = (($aa - $bb) - $addend)  ^ $backward;
+
         substr($out, $loop, 1) = pack("c", $aa);
         }
     # Pass loop   (decrypt)
     for ($loop = 0; $loop < $len; $loop++)
         {
         $aa = ord(substr($out, $loop, 1));
+
         $aa = $aa ^ ord(substr($_[1], $loop2, 1));
+
         $loop2++; if($loop2 >= $plen) {$loop2 = 0;}     #wrap over
         $out2 .= pack("c", $aa);
         }
@@ -227,10 +338,9 @@ sub pl_decrypt
 }
 
 # -------------------------------------------------------------------------
-# use: dumpdec($str)
-# Dump decimal sequence
+# Use: dumphex($str)
 
-sub dumpdec()
+sub dumphex()
 
 {
     $len  = length($_[0]);
@@ -238,9 +348,9 @@ sub dumpdec()
     for ($loop = 0; $loop < $len; $loop++)
         {
         $aa = ord(substr($_[0], $loop, 1));
-        print "-" . $aa;
+        $cc = sprintf("-%02x", $aa);
+        print $cc;
         }
-    print "\n";
 }
 
 1;

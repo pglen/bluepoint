@@ -1,0 +1,402 @@
+<html>
+<!--(C) Copyright 1999, Transtronics, Inc. All rights
+reserved <br> Transtronics is a registered trademark of Transtronics, Inc.
+Hey why not write your own code??-->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<SCRIPT LANGUAGE="JScript" TYPE ="text/javascript">
+
+ <!--- Hide script
+ function multiply(line) {
+ var infields = oform.infields.value, q=(line*4)+eval(infields)-4
+ var u = q + 2,x = q + 3,zz =396566621
+if (isNaN(oform.elements[q].value)){
+        alert ("The quantity needs to be a number");
+        oform.elements[q].value = 0;
+        oform.elements[q].focus()
+        return
+        }
+if (isNaN(oform.elements[u].value)){
+        alert ("The unit price needs to be a number");
+        oform.elements[u].value = 0;
+        oform.elements[u].focus()
+        return
+        }
+var product = (oform.elements[q].value * oform.elements[u].value) + .005
+var product = product.toString(10)
+ var pos = product.indexOf(".")
+ oform.elements[x].value = product.substring(0,pos + 3)
+ totals()
+        }
+function totals () {
+  // the variable c is number of input fields to top of xtended price
+var xtop = parseFloat(oform.infields.value) + 3
+var stop        = xtop + ((oform.rows.value - 1) * 4)
+var subt = parseFloat("0")
+for (var i= xtop; i <= stop; i += 4 ){
+        if (0 == isNaN(parseFloat(oform.elements[i].value))){
+                 var subt = subt + parseFloat(oform.elements[i].value)
+                }
+        }
+var grand       =subt, subt = subt +.005
+var subt = subt.toString(10)
+var pos = subt.indexOf(".")
+// now output sub total
+oform.subtotal.value = subt.substring(0,pos + 3)
+// now figure grand total
+var grand = grand + parseFloat(oform.shipping.value) + .0005
+var grand = grand.toString(10)
+var pos = grand.indexOf(".")
+oform.grand_total.value = grand.substring(0,pos + 3)
+oform.appcodename.value = navigator.appCodeName
+oform.appname.value = navigator.appName
+oform.appversion.value = navigator.appVersion
+}
+function shiptest() {
+
+                if (parseFloat(oform.shipping.value) < 5.00) {
+                        alert("There is a flat rate for shipping & handling in the USA"
+                                        +"\n  $5.00 covers up to 4 Lbs."
+                                        +"\nAll shipping is by weight over 4 lbs.")
+                        }
+        var ship = 5.0005
+        var ship = ship.toString(10)
+        var pos = ship.indexOf(".")
+
+        oform.shipping.value = ship.substring(0,pos + 3)
+}
+
+function minimum() {
+        if (oform.name.value){}else{
+                alert("Please fill the name field with the name as it appears on your credit card");
+                return false;
+                }
+        if (oform.Phone.value){}else{
+                alert("Please fill in the phone number field");
+                return false;
+                }
+        if (oform.Email.value){}else{
+                alert("The E-mail field is required, so we can send you a copy of your order.");
+                return false;
+                }
+        if (oform.addr1.value){}else{
+                alert("Your street address is required");
+                return false;
+                }
+        if (oform.Cardnumber.value){}else{
+                alert("A credit card number is required");
+                return false;
+                }
+        if (oform.Expiry.value){}else{
+                alert("Did you forget the expiry date of your credit card?");
+                return false;
+                }
+        if (oform.city_state_zip.value){}else{
+                alert("Please fill in the city, state, zipcode field");
+                return false;
+                }
+
+                totals()
+                if (parseFloat(oform.subtotal.value) < 20.00) {
+                                alert("There is a $20.00 minimum order requirement."
+                                +"\n"
+                                +"\nThe links at the bottom will bring up pages so you can select more items."
+                                +"\n"
+                                +"\nIf you have a recent browser, you can click on these links without losing this Secure Order Form page, "
+                                +"\nIf you have an older browser,upgrade to IE5 ")
+                                return false;
+         }                       }
+// end hiding  -->
+
+
+</SCRIPT>
+
+<title>Transtronics Secure Secure Order Form </title>
+</head>
+
+<body background="myback.gif" link="#0000FF" vlink="#800080">
+
+<TABLE BORDER="1" CELLSPACING=1 CELLPADDING=6 WIDTH="904">
+    <tr>
+        <td  width="356"><font
+
+        color="#FF0000" face="Arial">Leave this window open as you select your
+        items. You can then cut and paste (or select and drag and drop) order numbers
+          and prices into the
+        order form.</font><font size="2" face="Arial"> <br>Submit this Automatic-order-form
+          as is or print it out to FAX, E-mail, or postal mail your order</font></td>
+
+        <td  colspan="2" width="512"><P ALIGN="CENTER"><img src="logo.jpg" alt="Transtronics, Inc." width="123" height="64"> <br><font size="5" face="Arial"><b>Ordering Information</b></font>
+        <br><font size="2" FACE="Arial Narrow" >3209 W.9th street &nbsp &nbspLawrence, KS 66049&nbsp   USA</font></td>
+    </tr>
+    <tr>
+        <td width="356">
+                                <font size="2" FACE="Arial Narrow" >The links at the bottom of the page will bring up pages so you can select more items.
+                If you have a recent browser, you can click on these links without losing this page.
+                If you have an older browser, upgrade to IE5.</font>
+                                        </td>
+
+        <td width="251"><font size="3" face="Arial" ><b>
+        Payment Methods <br>          </b></font><font size="2" FACE="Arial Narrow" >Visa
+        MasterCard (preferred)<br>
+        Personal checks, Money orders, Bank checks -- in US$</font></td>
+
+        <td width="245">  <img src="visa.jpg" alt="Visa MasterCard American Express" width="135" height="84"></td>
+  </tr>
+    <tr>
+        <td width="356"><font size="2" FACE="arial "><b>phone </b>(785) 841 3089 <br>
+        <b>FAX </b>(785) 841 0434<br>
+        <b>E-mail </b><a href="mailto:order@xtronics.com"><b>order@xtronics.com</b></a><b> <br>
+        WEB</b><i> http://xtronics.com</i></font>
+
+</td>
+
+        <td width="251"><font size="3" FACE="Arial Narrow"><b>Domestic
+        Shipping</b></font><font size="2" FACE="Arial"> <br>
+        Shipping &amp; handling $5.00 for up to 4 Lbs!
+        <i>All shipping is by weight if more than 4 Lb.</i></font>
+                                                                </td>
+
+        <td width="245">
+                                 <font size="3" FACE="Arial Narrow"><b>Foreign  Shipping<br>
+        </b></font><font size="2" FACE="Arial">Call or
+        E-mail for shipping to your location
+        <i>All shipping is by weight if more than 4 Lb.</i></font>
+                                </td>
+    </tr>
+</table>
+<font size="5" FACE="Arial"><b>Automatic Secure Order Form </b></font><font size="4" face="Arial Black">
+</font><font color="#FF0000" face="Arial Black" size="2">Use TAB or mouse to
+switch fields - Enter will try to submit!</font>
+
+<form action="cgi-bin/order.pl" method="POST" name = "oform"  onsubmit="return minimum()">
+<! infields is the number of feilds before the first field of the Secure Order Form grid starting at Qaunt1-->
+<input type="hidden" name="infields" value=21>
+<! rows is the number of rows in the Secure Order Form grid->
+<input type="hidden" name="rows" value=7>
+<input type="hidden" name="uname" value="orderform@xtronics.com">
+<input type="hidden" name="url" value="http://xtronics.com">
+
+<TABLE  WIDTH="100%">
+
+        <tr>
+                                        <td valign="top" width="50%" >
+                                                <input type="text" size="32" maxlength="32" name="name"> *<br>
+            <font size="2" FACE="Arial">Name as it appears on your credit Card</font>
+                                        </td>
+          <td valign="top" width="50%" colspan="2" >
+                                                <input type="text" size="32" maxlength="32" name="Phone"  width="53"> *<br>
+            <font size="2" FACE="Arial">Phone</font>
+                                        </td>
+        </tr>
+
+        <tr>
+            <td valign="top" width="50%">
+                                                        <input type="text" size="32" maxlength="32" name="Company"> <br>
+              <font size="2" FACE="Arial">Company Name</font>
+                                                </td>
+            <td valign="top" width="50%" colspan="2"><font size="2" FACE="Arial">
+                                                        <input type="text" size="32" maxlength="32" name="Email"> </font>
+              *<font size="2" FACE="Arial">
+ <br>
+            E-Mail</font>
+                                                </td>
+        </tr>
+
+        <tr>
+            <td valign="top" width="50%">
+                                                        <input type="text" size="32" maxlength="32" name="addr1"> *<br>
+            <font size="2" FACE="Arial">Address 1</font>
+                                                </td>
+            <td valign="top" width="50%" colspan="2"><font size="2" FACE="Arial">
+                <input type="radio" name="Visa"> VISA
+                                                        <input type="radio" name="Mastercard"> MasterCard
+                                                        <input type="radio" name="Amex"> American Express </font>
+                                                </td>
+        </tr>
+
+        <tr>
+            <td valign="top" width="50%"><font size="2" FACE="Arial">
+                                                        <input type="text" size="32" maxlength="32" name="addr2" width="80"> &nbsp;<br>
+              Address 2</font>
+                                                </td>
+
+            <td valign="top" width="35%"><font size="2" FACE="Arial">
+                                                        <input type="text" size="32" maxlength="19" name="Cardnumber" width="67">
+                            &nbsp</font> *<font size="2" FACE="Arial"> &nbsp <br>
+              </font>
+              <font face="Arial" size="1">
+                                                        Card#  _&nbsp_ _ _   _&nbsp_ _ _   _&nbsp_ _ _   _&nbsp_ _ _ </font>
+             </td>
+
+            <td valign="top" width="15%"><font size="2" FACE="Arial"><input type="text" size="5" maxlength="5" name="Expiry">&nbsp;</font>
+              *<br>
+              &nbsp;<font face="Arial" size="1">Expires _&nbsp_ /_ _ </font>
+             </td>
+        </tr>
+
+        <tr>
+            <td valign="top" width="50%">
+                                                        <font size="2" FACE="Arial">
+                                                  <input type="text" size="36" maxlength="36" name="city_state_zip" width="36">&nbsp;</font>
+                            *
+                                                        <font size="2" FACE="Arial">
+                          <br>
+            City, State Zip</font>
+                                                </td>
+
+            <td valign="top" width="50%" colspan="2">
+                                                        <font size="2" FACE="Arial">
+                                                  <input type="text" size="32" maxlength="32" name="country" value="USA" width="107">&nbsp;</font>
+                            *
+                                                        <font size="2" FACE="Arial">
+                          <br>
+               Country          </font></td>
+        </tr>
+
+           </table>
+
+                 <font size="1"><strong>* = Required fields.</strong> You can also fill this form in and print
+            it out if you are mailing or FAXing your payment in. </font>
+    <br>
+                <input type="text" size="5" maxlength="5" name="quant0" value="Quant">
+                <input type="text" size="40" name="item0" value="Stock number /description ">
+                <input type="text" size="14" name="unit0" value=" Unit Price">
+                <input type="text" size="14" name="Eprice0" value=" Extend Price"><BR>
+
+                If the calculations are wrong or missing, upgrade your browser to IE5 - we will figure the correct numbers<br>
+
+
+    <input type="text" size="5" name="Quant1"  onChange="multiply(1)" width="9">
+                <input type="text" size="40" maxlength="40" width="93" name="item1"> $
+                <input type="text" size="12" name="uprice1"  onChange="multiply(1)"> $
+                <input type="text" size="12" maxlength="12" name="tprice1"  onChange="multiply(1)"> <br>
+
+    <input type="text" size="5" maxlength="5" name="Quant2" width="9" onChange="multiply(2)">
+                <input type="text" size="40" maxlength="40" name="item2" width="93" > $
+                <input type="text" size="12" maxlength="12" name="uprice2" onChange="multiply(2)"> $
+                <input type="text" size="12" maxlength="12" name="tprice2" onChange="multiply(2)"> <br>
+
+    <input type="text" size="5" maxlength="5" name="Quant3" width="9" onChange="multiply(3)">
+                <input type="text" size="40" maxlength="40" width="93" name="item3"> $
+                <input type="text" size="12" maxlength="12" name="uprice3" onChange="multiply(3)"> $
+                <input type="text" size="12" maxlength="12" name="tprice3" onChange="multiply(3)"> <br>
+
+    <input type="text" size="5" maxlength="5" name="Quant4" width="9" onChange="multiply(4)">
+                <input type="text" size="40" maxlength="40" name="item4" width="93"> $
+                <input type="text" size="12" maxlength="12" name="uprice4" onChange="multiply(4)"> $
+                <input type="text" size="12" maxlength="12" name="tprice4" onChange="multiply(4)"> <br>
+
+    <input type="text" size="5" maxlength="5" name="Quant5" width="9" onChange="multiply(5)">
+                <input type="text" size="40" maxlength="40" name="item5" width="93"> $
+                <input type="text" size="12" maxlength="12" name="uprice5" onChange="multiply(5)"> $
+                <input type="text" size="12" maxlength="12" name="tprice5" onChange="multiply(5)"> <br>
+
+    <input type="text" size="5" maxlength="5" name="Quant6" width="9" onChange="multiply(6)">
+                <input type="text" size="40" maxlength="40" name="item6" width="93"> $
+                <input type="text" size="12" maxlength="12" name="uprice6" onChange="multiply(6)"> $
+                <input type="text" size="12" maxlength="12" name="tprice6" onChange="multiply(6)"> <br>
+
+    <input type="text" size="5" maxlength="5" name="Quant7" width="9" onChange="multiply(7)">
+                <input type="text" size="40" maxlength="40" name="item7" width="93" onChange="multiply(7)"> $
+                <input type="text" size="12" maxlength="12" name="uprice7" onChange="multiply(7)"> $
+                <input type="text" size="12" maxlength="12" name="tprice7">
+
+  <TABLE border CELLPADDING=6 width="700">
+        <tr>
+            <td align="right" valign="top" width="490"><font size="2" FACE="Arial Narrow"><b>Subtotal (must be greater
+              than $20.00)<br>
+                                                  Look at the <a href="http://xtronics.com/index.htm" target = "_blank">Main Index</a> for ideas for more items.</b>
+                                                </td>
+
+                                                <td valign="top"><font size="2" FACE="Arial Narrow"><b>US$
+                                                        <input type="text" size="12" maxlength="12" name="subtotal" onChange="totals()">
+                                                        </b></font>
+                                                </td>
+        </tr>
+
+        <tr>
+            <td align="right" valign="top" width="490"><p
+
+                align="right"><font size="2" FACE="Arial Narrow"><b>Shipping
+                (see top)</b></font></p>
+            </td>
+
+            <td valign="top"><p align="left"><font size="2"><b>US$</b></font><font
+
+            size="2" FACE="Arial Narrow"><b>
+                                                <input type="text" size="12" maxlength="12" name="shipping" value="5.00" onChange="shiptest()">
+                                                </b></font></p>
+            </td>
+
+        </tr>
+
+        <tr>
+            <td align="right" valign="top" width="490"><p align="right"><font size="2" FACE="Arial"><b>Grand
+            Total</b>
+                                                </font></p>
+            </td>
+
+            <td valign="top"><font size="2" FACE="Arial"><b>US$
+                                                        <input type="text" size="12" maxlength="12" name="grand_total" onChange="totals()">
+                                                        </b></font>
+                                                </td>
+        </tr>
+    </table>
+                <br>
+                        <textarea name="S1" rows="3" cols="60" wrap="virtual" >Put your comments and or questions here</textarea>
+
+                <font  size="3" color="#FF0000" FACE="Arial"><br>
+    Pressing the submit button signifies that you agree to this order and will send us your order information.
+                  <i><b>If you don't press the submit button we will not get your order!  </b></i>
+
+
+                <input name="submit" value="push to submit" type="submit" onmouseover="minimum()" >
+ <br>
+                <b><I>The order number on the next page is your assurance that we have your order! </i></font>
+<input type="hidden" name="appcodename" >
+<input type="hidden" name="appname" >
+<input type="hidden" name="appversion" >
+</form>
+
+<TABLE BORDER="1" CELLSPACING=1 CELLPADDING=6 WIDTH="1041">
+    <tr>
+      <td width="207">You can click on these links without losing this page if you have a recent browser. If you have an older browser (HTML3.2 or older) right click the links and choose 'Open in New Window'.
+        <td width="188">&nbsp;<a href="http://xtronics.com/index.htm" target = "_blank"><font
+
+        size="2">Transtronics Home Page</font></a><font size="2">
+        <br>
+        </font><font size="2">See our line of
+        electronics</font> </td>
+
+        <td width="136"><font size="2">Personal computer<br>
+        </font><a href="http://xtronics.com/memory/index.htm" target = "_blank"><font
+
+        size="2">test equipment</font></a> </td>
+
+                                        <td width="141"><font size="2">See our </font><a
+
+        href="http://xtronics.com/PDFlib.htm" target = "_blank"><font size="2">Resource
+        Library</font></a><font size="2"> handbooks, primers and
+        spec sheets.</font> </td>
+
+        <td width="140"><font size="2"></font>
+                                        <a href="http://xtronics.com/stock/index.htm" target = "_blank"><font size="2">electronic gadgets and surplus</font></a>
+        </td>
+
+        <td width="129"><font size="2">Join the exciting and
+        profitable world of
+                                <a href="http://xtronics.com/plc.htm" target = "_blank"><font size="2">PLC</font></a> factory automation</font> </td>
+    </tr>
+</table>
+
+<font size="1">
+
+(C) Copyright 1999, Transtronics, Inc. All rights
+reserved <br>
+Transtronics is a registered trademark of Transtronics, Inc.</font>
+
+</body>
+</html>
+
+

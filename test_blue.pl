@@ -1,32 +1,47 @@
 #!/usr/local/bin/perl
 
-require "bluepoint.pl";
+	require "bluepoint.pl";
 
-$orig = "abcdefghijklmnpqrstuvxyz";
-$pass = "1234";
+	$orig = "abcdefghijklmnopqrstuvwxyz";
+	$pass = "1234";
 
-if(@ARGV[0] ne "")
-	{
-	$orig = @ARGV[0];
-	}
+	if(@ARGV[0] ne "")
+		{
+		$orig = @ARGV[0];
+		}
 
-if(@ARGV[1] ne "")
-	{
-	$pass = @ARGV[1];
-	}
+	if(@ARGV[1] ne "")
+		{
+		$pass = @ARGV[1];
+		}
 
-print "org=$orig  pas=$pass\n";
+	print "original='$orig'  pass='$pass'\n";
 
-#print "ORG: "; dumpdec($orig); print "\n";
+	#print "ORG: "; dumpdec($orig); print "\n";
 
-$str = bluepoint::encrypt($orig, $pass);
+	$str = bluepoint::encrypt($orig, $pass);
 
-#print "enc:  $str\n";
-print "ENC: "; dumpdec($str); print "\n";
+	#print "enc:  $str\n";
+	print "ENCRYPTED: \n";
+	#dumpdec($str);
+	bluepoint::dumphex($str);
+	print "\nEND ENCRYPTED\n";
 
-$str2 = bluepoint::decrypt($str, $pass);
-print "dec:  $str2\n";
-#print "DEC: "; dumpdec($str2); print  "\n";
+	$str2 = bluepoint::decrypt($str, $pass);
+	print "decrypted='$str2'\n";
+
+	#print "DEC: "; dumpdec($str2); print  "\n";
+
+	print "HASH: \n";
+	$str2 = bluepoint::hash($orig);
+
+    $cc = sprintf("%d  0x%08x", $str2, $str2);
+    print $cc . "\n";
+
+	print "CryptHASH: \n";
+	$str2 = bluepoint::crypthash($orig, $pass);
+    $cc = sprintf("%d  0x%08x", $str2, $str2);
+    print $cc . "\n";
 
 # -------------------------------------------------------------------------
 

@@ -38,7 +38,27 @@
 //     ported to Javascript
 //     ported to PHP
 //
+// How to use:
+//
+//  $cypher     = bluepoint_encrypt($orig, $pass);
+//  $orig       = bluepoint_decrypt($cypher, $pass);
+//  $hash       = bluepoint_hash($orig, $pass);
+//  $crypthash  = bluepoint_crypthash($orig, $pass);
+//
 // ----------------------------------------------------------------
+//
+// The command line interpreter for PHP5 has the following output:
+//
+// ant:/srv/www/archive/bluepoint/bluepoint3 # php5 test_blue.php
+// org='abcdefghijklmnopqrstuvwxyz'  pas='1234'
+// ENCRYPTED:
+// -2b-e4-5c-46-75-9e-05-c3-74-d4-35-76-5b-84-10-f8-b7-7e-f4-07-0a-37-50-07-69-3d
+// END ENCRYPTED
+// decrypted='abcdefghijklmnopqrstuvwxyz'
+// HASH:
+// -754656719 - 0xd304da31
+// CRYPTHASH:
+// -1382909316 - 0xad927a7c
 //
 // ----------------------------------------------------------------
 // these vars can be set to make a custom encryption:
@@ -61,13 +81,11 @@ function bluepoint_encrypt($buff, $pass)
     if(strlen($pass) == 0) { return buff; }
 
     // Formulate password
-    $full =  do_mulstring($pass, $passlim/strlen($pass) + 1);
+    $full  =  do_mulstring($pass, $passlim/strlen($pass) + 1);
     $passwd = substr($full, 0, $passlim);
-    $vec = do_crypt($vector, $vector);
-    //print "e VEC:  " . dumpdec($vec) . "\n";
-    $passwd = do_crypt($passwd, $vec);
-    //print "e PAS:  " . dumpdec($passwd) . "\n";
-    $str = do_crypt($buff, $passwd);
+    $vec = do_encrypt($vector, $vector);
+    $passwd = do_encrypt($passwd, $vec);
+    $str = do_encrypt($buff, $passwd);
     return $str;
 }
 
@@ -84,10 +102,8 @@ function bluepoint_decrypt($buff, $pass)
     // Formulate password
     $full =  do_mulstring($pass, $passlim/strlen($pass) + 1);
     $passwd = substr($full, 0, $passlim);
-    $vec = do_crypt($vector, $vector);
-    //print "d VEC:  " . dumpdec($vec) . "\n";
-    $passwd = do_crypt($passwd, $vec);
-    //print "d PAS:  " . dumpdec($passwd) . "\n";
+    $vec = do_encrypt($vector, $vector);
+    $passwd = do_encrypt($passwd, $vec);
     $str = do_decrypt($buff, $passwd);
     return $str;
 }
@@ -95,7 +111,7 @@ function bluepoint_decrypt($buff, $pass)
 // -----------------------------------------------------------------------
 // Internal to this module:
 
-function do_crypt($s, $p)
+function do_encrypt($s, $p)
 
 {
     global $forward, $backward, $addend;
@@ -129,6 +145,9 @@ function do_crypt($s, $p)
         {
         $aa = $p3[$loop];
         $aa = (($aa ^ $forward) + $addend) + $bb;
+
+        $aa = rotate8Right($aa, 3);
+
         $bb = $aa;
         $res .= chr($aa);
         }
@@ -154,8 +173,10 @@ function do_decrypt($s, $p)
     for ($loop = 0; $loop < $len; $loop++)
         {
         $bb = $cc;
-        $aa = ord(substr($s, $loop, 1));
-        $cc = $aa;
+        $cc = $aa = ord(substr($s, $loop, 1));
+
+        $aa = rotate8Left($aa, 3);
+
         $aa = (($aa - $bb) - $addend) ^ $forward;
         $p2 .= chr($aa);
         }
@@ -181,40 +202,93 @@ function do_decrypt($s, $p)
 }
 
 // -----------------------------------------------------------------------
-// Make checksum
-// use: sum = chksum(str)
-
-function bluepoint_chksum($s)
-
-{
-    $sum = 0;
-    $len = s.length;
-
-    for ($loop2 = 0; $loop2 < $len; $loop2++)
-        {
-        $sum += s.charCodeAt(loop2);
-        }
-    return $sum;
-}
-
-// -----------------------------------------------------------------------
 // Hash:
 // use: hashvalue = hash(str)
 
 function bluepoint_hash($s)
 
 {
-    $bb = 0;
-    $len = s.length;
+    $sum = 0;  $bb = 0;
+    $len  = strlen($s);
+
+    settype($sum, "integer");
+
     for ($loop3 = 0; $loop3 < $len; $loop3++)
         {
-        $aa = s.charCodeAt($loop3);
-        $aa = $aa * 0x8000 + (($aa / 0x8000) % 0x8000);
+        $aa = ord(substr($s, $loop3, 1));
 
-        $sum = $sum  ^ ($aa + $bb);
-        $bb = $aa;
+        $sum = $sum ^ $aa;
+
+        //$sum =  ($sum >> 10) | ($sum << (32 - 10)) ;
+        //$sum = RotateLeft($sum, 10);
+
+        $sum = RotateRight($sum, 10);
         }
-    return sum;
+
+    return $sum;
+}
+
+///////////////////////////////////////////////////////////////////////////
+// Support routines
+
+function RotateLeft($a, $b)
+
+{
+    $s = $a << $b;
+    $c = ShiftRZeroFill($a, (32 - $b));
+    $s = ($s | $c);
+
+    return $s;
+}
+
+function RotateRight($a, $b)
+
+{
+    $s = (int)$a << (32 - $b);
+    $c = ShiftRZeroFill($a, $b);
+    $s = (int)$s | (int)$c;
+
+    return $s;
+}
+
+function ShiftRZeroFill($a, $b)
+
+{
+    $z = hexdec(80000000);
+    if ($z & $a)
+        {
+        $a >>= 1;
+        $a &= (~ $z);
+        //$a |= 0x40000000;
+        $a >>= ($b-1);
+        }
+    else
+        {
+        $a >>= $b;
+        }
+    return $a;
+}
+
+function Rotate8Left($a, $b)
+
+{
+    $a &= 0xff;
+
+    $ss = $a << $b;
+    $cc = $a >> (8 - $b);
+
+    return $ss | $cc;
+}
+
+function Rotate8Right($a, $b)
+
+{
+    $a &= 0xff;
+
+    $ss = $a << (8 - $b);
+    $cc = $a >> $b;
+
+    return $ss | $cc;
 }
 
 // -----------------------------------------------------------------------
@@ -240,26 +314,11 @@ function do_mulstring($str, $nn)
     $res = "";
     for($xx = 0; $xx < $nn; $xx++)
         {
-        $res .= $str;
+        $res .= $str . "_";
         }
     return $res;
 }
 
-// ------------------------------------------------------------------------
-//
-//function dumpdec($s)
-//
-//{
-//    $len   = strlen($s);
-//    $res = "";
-//
-//    for ($loop = 0; $loop < $len; $loop++)
-//        {
-//        $aa = substr($s, $loop, 1);
-//        $res .=  "-" . ord($aa);
-//        }
-//    return($res);
-//}
-
 // EOF
+
 ?>

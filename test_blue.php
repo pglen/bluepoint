@@ -1,10 +1,12 @@
 <?PHP
 
+	error_reporting(E_ERROR | E_WARNING | E_PARSE);
+
 	include "bluepoint.php";
 
 	$argv =  $_SERVER[argv];
 
-	$orig = "abcdefghijklmnpqrstuvxyz";
+	$orig = "abcdefghijklmnopqrstuvwxyz";
 	$pass = "1234";
 
 	if($argv[1] != "")
@@ -16,17 +18,29 @@
 		$pass = $argv[2];
 		}
 
-	print "org=$orig  pas=$pass\n";
-	#print "ORG: "; dumpdec($orig); print "\n";
+	print "org='$orig'  pas='$pass'\n";
 	$str1 = bluepoint_encrypt($orig, $pass);
-	print "ENC: " .  dumpdec($str1) .  "\n";
+
+	print "ENCRYPTED: \n";
+	dumphex($str1);
+	print "\nEND ENCRYPTED\n";
+
 	$str2 = bluepoint_decrypt($str1, $pass);
-	print "dec:  $str2\n";
-	#print "DEC: "; dumpdec($str2); print  "\n";
+	print "decrypted='$str2'\n";
+
+	print "HASH: \n";
+	$str2 = bluepoint_hash($orig, $pass);
+    $cc = sprintf("%08x", $str2);
+    print $str2 . " - 0x"  . $cc . "\n";
+
+	print "CRYPTHASH: \n";
+	$str2 = bluepoint_crypthash($orig, $pass);
+    $cc = sprintf("%08x", $str2);
+    print $str2 . " - 0x"  . $cc;
 
 // -------------------------------------------------------------------------
 
-function dumpdec($s)
+function dumphex($s)
 
 {
     $len   = strlen($s);
@@ -35,14 +49,12 @@ function dumpdec($s)
     for ($loop = 0; $loop < $len; $loop++)
         {
         $aa = substr($s, $loop, 1);
-        $res .=  "-" . ord($aa);
+        $cc = sprintf("-%02x", ord($aa));
+        $res .=  $cc;
         }
-    //print $res;
+    print $res;
     return($res);
 }
-
-
-
 
 ?>
 
