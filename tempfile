@@ -1,0 +1,20 @@
+orignal='abcdefghijklmnopqrstuvwxyz' pass='1234'
+ENCRYPTED: 
+7f36c52a33e30edf8b5f7b8dcbb1aa649188356a3f37e8b9248e
+END ENCRYPTED
+
+HASH:          13366471693334200255 0xb97f3f2fbd7fbfbf
+CRYPTHASH:     18329649370984611836 0xfe5ffefcfefffffc
+HASH64:        17370781859372208493 0xf1116a1116ae116d
+CRYPTHASH64:   18080788936710547984 0xfaebddbde771ea10
+
+TOHEX: 
+'7f36c52a33e30edf8b5f7b8dcbb1aa649188356a3f37e8b9248e'
+END TOHEX
+FROMHEX: 
+'7f36c52a33e30edf8b5f7b8dcbb1aa649188356a3f37e8b9248e'
+END FROMHEX
+decrypted='abcdefghijklmnopqrstuvwxyz'
+
+Decrypt OK.
+

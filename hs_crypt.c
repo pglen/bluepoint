@@ -5,7 +5,7 @@
 
 #define _GNU_SOURCE
 
-#include <fuse.h>
+//#include <fuse.h>
 #include <ulockmgr.h>
 
 #include <syslog.h>
@@ -20,9 +20,12 @@
 #include <syslog.h>
 #include <sys/time.h>
 
-#include "../src/hsencfs.h"
+//#include "../src/hsencfs.h"
+
 #include "bluepoint2.h"
 #include "hs_crypt.h"
+
+#define MIN(a, b) (a) < (b) ? (a) : (b)
 
 #ifdef NONE_ENCRYPT
 

@@ -28,6 +28,9 @@
 //#
 //# -------------------------------------------------------------------------
 
+// This is to enable full encryption
+#define  FULL_ENCRYPT 1
+
 typedef  unsigned long ulong;
 
 void	bluepoint_encrypt(char *buff, int blen, char *pass, int plen);
