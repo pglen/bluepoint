@@ -1,6 +1,7 @@
-                             README
+#                             README
                         
- This directory contains the bluepoint encryption algorithm and test suite
+ This directory contains the bluepoint algorithm and test suite.
+
 The hs_crypt() family of functions are a block encryption loop for looping
 over buffers in a consistent manner.
 
