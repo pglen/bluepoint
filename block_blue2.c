@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////
-// Bluepoint block suite
+// Bluepoint block test suite
 //
-
+ 
 #include "stdlib.h"
 #include "stdio.h"
 #include "string.h"
@@ -27,8 +27,6 @@ struct centinel
 
 char pass[128] = "1234";
 int slen, plen;
-
-#include "hs_crypt.c"
 
 int sdump(void *mem)
 {
@@ -84,6 +82,8 @@ int main(int argc, char *argv[])
     printf("Compare slen %d got %d\n", slen, ret);
     printf("Sentinels %4s, %4s, %4s, %4s\n", cent.sent1, cent.sent2, cent.sent3, cent.sent4);
 }
+
+
 
 
 

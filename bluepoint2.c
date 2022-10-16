@@ -94,6 +94,7 @@
 #define     ROTATE_CHAR_RIGHT(x, n) (((x) >> (n))  | ((x) << (8 - (n))))
 #define     ROTATE_CHAR_LEFT(x, n) (((x) << (n))  | ((x) >> (8 - (n))))
 
+#include "hs_crypt.c"
 #include "bluemac.h"
 
 static  void    do_encrypt(char *str, int slen, char *pass, int plen);
@@ -601,6 +602,7 @@ char    *bluepoint2_fromhex(char *str, int len, char *out, int *olen)
     *olen = pos;
     return(out);
 }
+
 
 
 

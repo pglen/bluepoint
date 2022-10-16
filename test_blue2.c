@@ -84,6 +84,9 @@ int main(int argc, char *argv[])
 
     bluepoint2_decrypt(dumped2, olen2, pass, plen);
     printf("decrypted='%s'\n", dumped2);
+    
+    return 0;
 }
+
 
 

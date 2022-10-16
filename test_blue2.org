@@ -1,0 +1,19 @@
+orignal='abcdefghijklmnopqrstuvwxyz' pass='1234'
+ENCRYPTED: 
+-2b-8f-ca-d2-cf-80-bb-9a-e9-e5-d1-14-c6-5e-03-29-86-5a-b0-21-2b-b5-02-8a-43-bc
+END ENCRYPTED
+HASH:
+3540310577 0xd304da31
+CRYPTHASH: 
+1073318031 0x3ff9888f
+HASH64:
+17370781859372208493 0xf1116a1116ae116d
+CRYPTHASH64: 
+4795301067163088340 0x428c54e9fb4eb5d4
+TOHEX: 
+'2b8fcad2cf80bb9ae9e5d114c65e0329865ab0212bb5028a43bc'
+END TOHEX
+FROMHEX: 
+-2b-8f-ca-d2-cf-80-bb-9a-e9-e5-d1-14-c6-5e-03-29-86-5a-b0-21-2b-b5-02-8a-43-bc
+END FROMHEX
+decrypted='abcdefghijklmnopqrstuvwxyz'

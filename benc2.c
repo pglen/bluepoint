@@ -11,7 +11,7 @@ char buff[4096];
 char pass[128];
 int plen;
 
-#include "hs_crypt.c"
+//#include "hs_crypt.c"
    
 int main(int argc, char *argv[])
 
@@ -49,6 +49,7 @@ int main(int argc, char *argv[])
         
     exit(0);    
 }
+
 
 
 

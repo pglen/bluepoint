@@ -1,19 +1,17 @@
 ///////////////////////////////////////////////////////////////////////////
-// Bluepoint file decryption
+// Test reader
 ///////////////////////////////////////////////////////////////////////////
 
 #include "stdlib.h"
 #include "stdio.h"
 #include "string.h"
 
-#include "bluepoint2.h"
+#include "../bluepoint2.h"
 
-char buff[4096];
+char buff[13];
 char pass[128];
 int plen;
-
-//#include "hs_crypt.c"
-
+    
 int main(int argc, char *argv[])
 
 {
@@ -22,7 +20,7 @@ int main(int argc, char *argv[])
     
     if(argc < 2)
         {         
-        fprintf(stderr, "Usage: bdec2 infile\n");
+        fprintf(stderr, "Usage: tread2 infile\n");
         exit(1);
         }
     
@@ -39,9 +37,6 @@ int main(int argc, char *argv[])
         if(len == 0)
             break;
         
-        //#fprintf(stderr, "read len %d\n", len);
-        hs_decrypt(buff, sizeof(buff), pass, plen);
-        
         for (loop = 0; loop < sizeof(buff); loop++)
             putchar(buff[loop]);
             
@@ -50,8 +45,6 @@ int main(int argc, char *argv[])
         }
     exit(0);    
 }
-
-
 
 
 
