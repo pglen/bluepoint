@@ -3,7 +3,7 @@
 
  This directory contains the bluepoint algorithm and test suite.
 
-The hs_crypt() family of functions are a block handling loops to iterate
+The hs_crypt() family of functions are block handling loops to iterate
 over buffers in a consistent manner.
 
 This is bluepoint version 2, and 3, see documentation on differences.
@@ -20,8 +20,8 @@ Bluepoint 3 data flow:
     // virtual machine
 
     // Pre - do the regular encryption process
-    // This is run in case the modified virtual machine creates
-    // a short circuit like pairs; this way it is always strong
+    // This section is run in case the modified virtual machine creates
+    // a short circuit like pairs; with it, the scramble is always strong
 
         PASSLOOP(+)
         MIXIT2(+)       MIXIT2R(+)
@@ -34,7 +34,12 @@ Bluepoint 3 data flow:
 
     // Done
 
-   // Decryption is run in reverse
+    // Decryption is run in reverse
+    //   Static
+    //   Regular
+    //   Pass vector
+
+ Both processes start with a password obfuscation;
 
 Sun 16.Oct.2022 updated bluepoint 3
 
