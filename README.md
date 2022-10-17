@@ -41,6 +41,21 @@ Bluepoint 3 data flow:
 
  Both processes start with a password obfuscation;
 
+Single bit in the pass propagetes to every byte:
+
+    petergl@ubunew:~/pgsrc/bluepoint$ ./encrypt_blue2 -p 1111
+    53ce29d3e9afd899b1a79bf4f1530870755d07d6c6e8619ff1fa
+    petergl@ubunew:~/pgsrc/bluepoint$ ./encrypt_blue2 -p 1112
+    50f334cc911a30a90f846b67128595899c3e04744a9bda168c21
+
+Single bit in the payload propagetes to every byte:
+
+    petergl@ubunew:~/pgsrc/bluepoint$ ./encrypt_blue2 11111111
+    c8be9428c5a15c26
+    petergl@ubunew:~/pgsrc/bluepoint$ ./encrypt_blue2 11111112
+    7c34888116eb54d8
+
+
 Sun 16.Oct.2022 updated bluepoint 3
 
 // EOF
