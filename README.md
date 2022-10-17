@@ -7,11 +7,12 @@ The hs_crypt() family of functions are block handling loops to iterate
 over buffers in a consistent manner.
 
   This is bluepoint version 2, and 3, see documentation on differences.
-The bluepoint version 3, (the virtual machine version) is under development.
+The bluepoint version 3, (the virtual machine version) is under development,
+close to completion.
 
     Version 3 might be quantum resistant;
 
-Bluepoint 3 data flow:
+#### Bluepoint 3 data flow:
 
     // Run through the pre-defined VM stack
 
