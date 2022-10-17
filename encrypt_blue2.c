@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
 
             case 'r':
                 rounds = atoi(optarg);
-                printf("rounds %d\n", rounds);
+                //printf("rounds %d\n", rounds);
             break;
 
             case '?':

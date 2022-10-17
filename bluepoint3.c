@@ -379,7 +379,7 @@ void    prep_pass(const char *pass, int plen, char *newpass)
             if(idx < 0)
                 break;
 
-            //printf("ENC: %d %p\n", idx, vmstack[loop]);
+            //printf("ENC: %d %p\n", idx, vmstack[idx]);
             if(idx < sizeof(vmstack) / sizeof(void*) )
                 {
                 //printf("vmstack: %d\n", idx);
@@ -505,6 +505,9 @@ void    ENCRYPT(char *str, int slen, char *pass, int plen)
     //printf("ENCRYPT() slen=%d plen=%d\n", slen, plen);
 
     //return;
+
+    // Run through the pre defined stack
+
     int items = sizeof(midx_list) / sizeof(int);
 
     for(int loop = 0; loop < items; loop++)
