@@ -21,6 +21,8 @@ close to completion.
     // so the pass is connected to the virtual machine
 
     // Pre 2 - do the regular encryption process
+
+    // Pre 3 - execute the static parts of the algorythm
     // This section is run in case the modified virtual machine creates
     // a short circuit (via unlikely pairs); with this static part, the scramble is
     // always strong
