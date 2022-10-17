@@ -13,6 +13,7 @@
 
 int verbose = 0;
 int alg_3   = 0;
+int rounds  = 0;
 
 char tmp[1000] = "";
 char cyph[1000] = "";
@@ -27,9 +28,10 @@ void help()
 {
     printf("\nUsage: decrypt_blue [options] [cyphertext] \n");
     printf("\nOptions: \n");
-    printf("       -p password   --pass password -- the password\n");
-    printf("       -v            --verbose       -- verbosith level\n");
-    printf("       -3            --three         -- select algorythm\n");
+    printf("       -p password   --pass password | the password\n");
+    printf("       -v            --verbose       | verbosity level\n");
+    printf("       -3            --three         | select algorythm\n");
+    printf("       -r rounds                     | rounds for algorythm\n");
     printf("\n");
 }
 
@@ -42,7 +44,7 @@ static struct option long_options[] = {
 	};
 
 //static char options[] = "abcd:012fhio:lmnpqrstvy";
-static char options[] = "p:v3";
+static char options[] = "p:v3r:";
 
 int     main(int argc, char *argv[])
 
@@ -88,6 +90,11 @@ int     main(int argc, char *argv[])
                 verbose = 1;
             break;
 
+            case 'r':
+                rounds = atoi(optarg);
+                //printf("rounds %d\n", rounds);
+            break;
+
             case '3':
                 //printf ("option 3 %s\n", optarg);
                 alg_3 = 1;
@@ -105,6 +112,9 @@ int     main(int argc, char *argv[])
             break;
             }
         }
+
+    if(rounds)
+        bluepoint3_set_rounds(rounds);
 
     int offs = 0;
     if(argc > optind)

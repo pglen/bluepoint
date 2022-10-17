@@ -30,10 +30,10 @@ void help()
 {
     printf("\nUsage: encrypt_blue [options] [orgtext] \n");
     printf("\nOptions: \n");
-    printf("       -p password   --pass password -- the password\n");
-    printf("       -v            --verbose       -- verbosith level\n");
-    printf("       -3            --three         -- select algorythm\n");
-    printf("       -r rounds                     -- rounds for algorythm\n");
+    printf("       -p password   --pass password | the password\n");
+    printf("       -v            --verbose       | verbosity level\n");
+    printf("       -3            --three         | select algorythm\n");
+    printf("       -r rounds                     | rounds for algorythm\n");
     printf("\n");
 }
 
