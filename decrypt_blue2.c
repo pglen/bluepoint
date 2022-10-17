@@ -35,7 +35,6 @@ void help()
     printf("\n");
 }
 
-
 static struct option long_options[] = {
    {"help", 0, 0, 0},
    {"pass", 1, 0, 0},
