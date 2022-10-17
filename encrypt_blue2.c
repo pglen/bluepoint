@@ -10,8 +10,11 @@
 #define DEF_DUMPHEX  1   // undefine this if you do not want bluepoint2_dumphex
 
 #include "bluepoint2.h"
+#include "bluepoint3.h"
 
 int verbose = 0;
+int alg_3   = 0;
+int rounds  = 0;
 
 char copy[1000] = "";
 char cyph[1000] = "";
@@ -27,8 +30,10 @@ void help()
 {
     printf("\nUsage: encrypt_blue [options] [orgtext] \n");
     printf("\nOptions: \n");
-    printf("       -p password   --pass password\n");
-    printf("       -v            --verbose\n");
+    printf("       -p password   --pass password -- the password\n");
+    printf("       -v            --verbose       -- verbosith level\n");
+    printf("       -3            --three         -- select algorythm\n");
+    printf("       -r rounds                     -- rounds for algorythm\n");
     printf("\n");
 }
 
@@ -40,7 +45,7 @@ static struct option long_options[] = {
 	};
 
 //static char options[] = "abcd:012fhio:lmnpqrstvy";
-static char options[] = "p:v";
+static char options[] = "p:v3r:";
 
 int main(int argc, char *argv[])
 
@@ -83,9 +88,24 @@ int main(int argc, char *argv[])
                 verbose = 1;
             break;
 
+            case '3':
+                //printf ("option 3 %s\n", optarg);
+                alg_3 = 1;
+            break;
+
+            case 'h':
+                help();
+                exit(1);
+            break;
+
             case 'p':
-                strncpy(pass, optarg, sizeof(pass));
                 //printf ("option p %s\n", optarg);
+                strncpy(pass, optarg, sizeof(pass));
+            break;
+
+            case 'r':
+                rounds = atoi(optarg);
+                printf("rounds %d\n", rounds);
             break;
 
             case '?':
@@ -102,20 +122,41 @@ int main(int argc, char *argv[])
         strncpy(copy, argv[optind], sizeof(copy));
         strncpy(cyph, argv[optind], sizeof(cyph));
         }
+
     //printf("orig='%s' pass='%s'\n", orig, pass);
 
+    if(rounds)
+        bluepoint3_set_rounds(rounds);
+
     slen = strlen(orig); plen = strlen(pass);
-    bluepoint2_encrypt(cyph, slen, pass, plen);
+
+    //printf("plen %d\n", plen);
+
+    if(alg_3)
+        bluepoint3_encrypt(cyph, slen, pass, plen);
+    else
+        bluepoint2_encrypt(cyph, slen, pass, plen);
+
     memcpy(copy, cyph, sizeof(cyph));
 
     bluepoint2_tohex(cyph, slen, tmp, &tmplen);
     printf("%s\n", tmp);
 
     //printf("Cypher: %s\n", tmp);
-    bluepoint2_decrypt(copy, slen, pass, plen);
+
+    if(alg_3)
+        bluepoint3_decrypt(copy, slen, pass, plen);
+    else
+        bluepoint2_decrypt(copy, slen, pass, plen);
+
     ////printf("copy='%s' pass='%s'\n", copy, pass);
-    //printf("org: '%s'\n", orig);
-    //printf("dec: '%s'\n", copy);
+
+    if(verbose)
+        {
+        printf("org: '%s'\n", orig);
+        printf("dec: '%s'\n", copy);
+        }
+
     if(strcmp(copy, orig) != 0)
         {
         printf("Error on enc / dec cycle\n");

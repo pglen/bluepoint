@@ -123,5 +123,17 @@
         str[loop] = aa;                             \
         }                                           \
 
+#define TRILOOP(op)                                 \
+    for (loop = 0; loop < slen; loop++)             \
+        {                                           \
+        aa = str[loop];                             \
+        if(loop %3 == 0)                            \
+            aa op 3;                                \
+        if(loop %3 == 1)                            \
+            aa op 5;                                \
+        if(loop %3 == 2)                            \
+            aa op 7;                                \
+        str[loop] = aa;                             \
+        }
 
-
+// EOF

@@ -9,8 +9,10 @@
 
 #define DEF_DUMPHEX  1   // undefine this if you do not want bluepoint2_dumphex
 #include "bluepoint2.h"
+#include "bluepoint3.h"
 
 int verbose = 0;
+int alg_3   = 0;
 
 char tmp[1000] = "";
 char cyph[1000] = "";
@@ -25,8 +27,9 @@ void help()
 {
     printf("\nUsage: decrypt_blue [options] [cyphertext] \n");
     printf("\nOptions: \n");
-    printf("       -p password   --pass password\n");
-    printf("       -v            --verbose\n");
+    printf("       -p password   --pass password -- the password\n");
+    printf("       -v            --verbose       -- verbosith level\n");
+    printf("       -3            --three         -- select algorythm\n");
     printf("\n");
 }
 
@@ -39,7 +42,7 @@ static struct option long_options[] = {
 	};
 
 //static char options[] = "abcd:012fhio:lmnpqrstvy";
-static char options[] = "p:v";
+static char options[] = "p:v3";
 
 int     main(int argc, char *argv[])
 
@@ -75,9 +78,19 @@ int     main(int argc, char *argv[])
                     }
             break;
 
+            case 'h':
+                help();
+                exit(1);
+            break;
+
             case 'v':
                 //printf ("option v %s\n", optarg);
                 verbose = 1;
+            break;
+
+            case '3':
+                //printf ("option 3 %s\n", optarg);
+                alg_3 = 1;
             break;
 
             case 'p':
@@ -126,7 +139,14 @@ int     main(int argc, char *argv[])
 
     bluepoint2_fromhex(tmp, offs, cyph, &len);
     slen = len; plen = strlen(pass);
-    bluepoint2_decrypt(cyph, slen, pass, plen);
+
+    //printf("plen %d\n", plen);
+
+    if(alg_3)
+        bluepoint3_decrypt(cyph, slen, pass, plen);
+    else
+        bluepoint2_decrypt(cyph, slen, pass, plen);
+
     printf("%s\n", cyph);
 
     return 0;
