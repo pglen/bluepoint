@@ -10,7 +10,7 @@
 #define DEF_DUMPHEX  1   // undefine this if you do not want bluepoint2_dumphex
 
 #include "bluepoint2.h"
-#include "bluepoint3.h"
+//include "bluepoint3.h"
 
 int verbose = 0;
 int alg_3   = 0;
@@ -32,7 +32,7 @@ void help()
     printf("\nOptions: \n");
     printf("       -p password   --pass password | the password\n");
     printf("       -v            --verbose       | verbosity level\n");
-    printf("       -3            --three         | select algorythm\n");
+    //printf("       -3            --three         | select algorythm\n");
     printf("       -r rounds                     | rounds for algorythm\n");
     printf("\n");
 }
@@ -126,15 +126,15 @@ int main(int argc, char *argv[])
     //printf("orig='%s' pass='%s'\n", orig, pass);
 
     if(rounds)
-        bluepoint3_set_rounds(rounds);
+        bluepoint2_set_rounds(rounds);
 
     slen = strlen(orig); plen = strlen(pass);
 
     //printf("plen %d\n", plen);
 
-    if(alg_3)
-        bluepoint3_encrypt(cyph, slen, pass, plen);
-    else
+    //if(alg_3)
+    //    bluepoint3_encrypt(cyph, slen, pass, plen);
+    //else
         bluepoint2_encrypt(cyph, slen, pass, plen);
 
     memcpy(copy, cyph, sizeof(cyph));
@@ -144,9 +144,9 @@ int main(int argc, char *argv[])
 
     //printf("Cypher: %s\n", tmp);
 
-    if(alg_3)
-        bluepoint3_decrypt(copy, slen, pass, plen);
-    else
+    //if(alg_3)
+    //    bluepoint3_decrypt(copy, slen, pass, plen);
+    //else
         bluepoint2_decrypt(copy, slen, pass, plen);
 
     ////printf("copy='%s' pass='%s'\n", copy, pass);

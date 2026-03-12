@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<title>TITLE</title>
+<meta charset="UTF-8">
+<link rel='icon' href='data:;base64,iVBORw0KGgo='>
+</head>
+
+<script type="text/javascript" src="bluepoint.js"></script>
+<script>
+    window.addEventListener('load', function()
+    {
+    org = "aaaa"
+    //console.log("Start");
+    const orgOutput = document.getElementById('org');
+    orgOutput.innerHTML = "org: " + org
+
+    const textOutput = document.getElementById('txt');
+    eeee = bluepoint_encrypt(org, "1234");
+    const binOutput = document.getElementById('bin');
+    binOutput.innerHTML = "enc: " + dumphex(eeee);
+    dddd = bluepoint_decrypt(eeee,  "1234");
+    textOutput.innerHTML = "dec: " + dddd;
+    } );
+</script>
+<body>
+<div id=org> Hello
+</div>
+
+<div id=bin> Hello
+</div>
+
+<div id=txt> Hello
+</div>
+
+</body>

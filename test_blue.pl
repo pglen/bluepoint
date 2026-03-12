@@ -1,6 +1,6 @@
 #!/usr/local/bin/perl
 
-	require "bluepoint.pl";
+	require "./bluepoint.pl";
 
 	$orig = "abcdefghijklmnopqrstuvwxyz";
 	$pass = "1234";

@@ -9,7 +9,7 @@
 
 #define DEF_DUMPHEX  1   // undefine this if you do not want bluepoint2_dumphex
 #include "bluepoint2.h"
-#include "bluepoint3.h"
+//include "bluepoint3.h"
 
 int verbose = 0;
 int alg_3   = 0;
@@ -30,7 +30,7 @@ void help()
     printf("\nOptions: \n");
     printf("       -p password   --pass password | the password\n");
     printf("       -v            --verbose       | verbosity level\n");
-    printf("       -3            --three         | select algorythm\n");
+    //printf("       -3            --three         | select algorythm\n");
     printf("       -r rounds                     | rounds for algorythm\n");
     printf("\n");
 }
@@ -113,7 +113,7 @@ int     main(int argc, char *argv[])
         }
 
     if(rounds)
-        bluepoint3_set_rounds(rounds);
+        bluepoint2_set_rounds(rounds);
 
     int offs = 0;
     if(argc > optind)
@@ -151,9 +151,9 @@ int     main(int argc, char *argv[])
 
     //printf("plen %d\n", plen);
 
-    if(alg_3)
-        bluepoint3_decrypt(cyph, slen, pass, plen);
-    else
+    //if(alg_3)
+    //    bluepoint3_decrypt(cyph, slen, pass, plen);
+    //else
         bluepoint2_decrypt(cyph, slen, pass, plen);
 
     printf("%s\n", cyph);

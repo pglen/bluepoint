@@ -4,7 +4,7 @@
 
 	include "bluepoint.php";
 
-	$argv =  $_SERVER[argv];
+	//$argv =  $_SERVER[$argv];
 
 	$orig = "abcdefghijklmnopqrstuvwxyz";
 	$pass = "1234";
