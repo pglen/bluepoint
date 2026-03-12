@@ -2,7 +2,7 @@
 // Bluepoint encryption routines.
 //
 // Please note that this is an extraction of the main bluepoint2 code thread
-// for HSENCFS. 
+// for HSENCFS.
 //
 //   How it works:
 //
@@ -396,6 +396,59 @@ void    do_decrypt(char *str, int slen, char *pass, int plen)
 }
 
 //# -------------------------------------------------------------------------
+// convert binary str to hex string
+//# char    *bluepoint_tohex(char *str, int len, char *out, int *len)
+
+char    *bluepoint_tohex(char *str, int len, char *out, int *olen)
+
+{
+    int loop = 0, pos = 0;
+    for (loop = 0; loop < len; loop++)
+        {
+        pos += sprintf(out + pos, "%02x", ( unsigned char) str[loop]);
+
+        if(pos >= *olen - 4)
+            break;
+        }
+    *olen = pos;
+    return(out);
+}
+
+//# -------------------------------------------------------------------------
+// convert hex string to binary str
+//# char    *bluepoint_fromhex(char *str, int len, char *out, int *len)
+
+char    *bluepoint_fromhex(char *str, int len, char *out, int *olen)
+
+{
+    unsigned char *str2 = (unsigned char *)str;
+
+    char chh[3]; chh[2] = 0;
+
+    int loop = 0, pos = 0;
+    for (loop = 0; loop < len; loop += 2)
+        {
+        long vv;
+
+        chh[0] =  *(str + loop);
+        chh[1] =  *(str + loop + 1);
+
+        vv = strtol(chh, NULL, 16);
+
+             if(pos > *olen - 3)
+            break;
+
+        out[pos++] =(char)vv;
+        }
+
+    // It aborted for just enough space to zero terminate
+    out[pos] = 0;
+
+    *olen = pos;
+    return(out);
+}
+
+//# -------------------------------------------------------------------------
 // use it for testing only as it has a 256 byte buffer limit
 //# Use: mystr = bluepoint_dumphex($str)
 
@@ -407,16 +460,16 @@ char    *bluepoint_dumphex(char *str, int len)
 
 {
     buff[0] = 0;  int loop = 0, pos = 0;
-    
+
     if(verbose)
         {
         printf("bluepoint_dumphex str=%p len=%d ", str, len);
         }
-    
+
     for (loop = 0; loop < len; loop++)
         {
         pos += sprintf(buff + pos, "-%02x", ( unsigned char)str[loop]);
-        
+
         if(pos >= (sizeof(buff) - 8))
             {
             //# Show that string is incomplete

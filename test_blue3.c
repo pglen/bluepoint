@@ -21,11 +21,11 @@ char *dump_buff(const char *ptr, int len)
     int olen = 3 * len;
     char *ret = malloc(olen);
     if(!ret) return ret;
-    //int iret = 
+    //int iret =
     bluepoint3_tohex(ptr, len, ret, &olen);
     //if(!iret)
     //    { free(ret); return NULL; }
-    return ret;  
+    return ret;
 }
 
 int main(int argc, char *argv[])
@@ -59,31 +59,31 @@ int main(int argc, char *argv[])
     int tot = sizeof(bound) + sizeof(orig) + sizeof(bound2) + 6;
     for (int aa = 0; aa < tot; aa++)
          printf("%x", bound[aa]);
-    printf("\n");   
+    printf("\n");
 #endif
-    
+
     int slen = strlen(orig); int plen = strlen(pass);
 
     //bluepoint3_set_functrace(1);
     //bluepoint3_set_verbose(1);
-    
-    char orig2[128]; 
+
+    char orig2[128];
     strcpy(orig2, orig);
     bluepoint3_encrypt(orig2, slen, pass, plen);
 
     printf("ENCRYPTED: \n");
     char *tmp = dump_buff(orig2, slen);
-    printf("'%s'\n", tmp); 
+    printf("'%s'\n", tmp);
     free(tmp);
     printf("END ENCRYPTED\n");
 
     printf("HASH:\n");
     hh = bluepoint3_hash(copy, slen);
-    printf("%u 0x%08x\n", hh, hh);
+    printf("%lu 0x%08lx\n", hh, hh);
 
     printf("CRYPTHASH: \n");
     hh = bluepoint3_crypthash(copy, slen, pass, plen);
-    printf("%u 0x%08x\n", hh, hh);
+    printf("%lu 0x%08lx\n", hh, hh);
 
     printf("HASH64:\n");
     unsigned long long int hhh = bluepoint3_hash64(copy, slen);
@@ -110,32 +110,32 @@ int main(int argc, char *argv[])
     if (memcmp(dumped2, orig2, olen2))
         {
         printf("Decrypt error.");
-        } 
+        }
     printf("FROMHEX: \n");
     //printf("'%s'", dumped2);
     char *tmp2 = dump_buff(dumped2, olen2);
-    printf("'%s'\n", tmp2); 
+    printf("'%s'\n", tmp2);
     free(tmp2);
     printf("END FROMHEX\n");
 
     bluepoint3_decrypt(dumped2, olen2, pass, plen);
     printf("decrypted='%s'\n", dumped2);
-    
+
     //bluepoint3_decrypt(orig2, slen, pass, plen);
     //printf("orig2='%s'\n", orig2);
-    
+
     // Verify if declaration follows source order
     //printf("Dump bounds\n");
     //for (int aa = 0; aa < tot; aa++)
     //     printf("%x", bound[aa] & 0xff);
-    //printf("\n");   
+    //printf("\n");
 
     if(memcmp(dumped2, orig, strlen(orig)) != 0)
         {
-        printf("ERROR decrypted str does not match\n"); 
+        printf("ERROR decrypted str does not match\n");
         ret = 1;
         }
-    return ret;    
+    return ret;
 }
 
 

@@ -82,11 +82,11 @@ int main(int argc, char *argv[])
 
 	printf("HASH:\n");
 	hh = bluepoint_hash(copy, slen);
-    printf("%d 0x%08x\n", hh, hh);
+    printf("%ld 0x%08lx\n", hh, hh);
 
 	printf("CRYPTHASH: \n");
 	hh = bluepoint_crypthash(copy, slen, pass, plen);
-    printf("%d 0x%08x\n", hh, hh);
+    printf("%ld 0x%08lx\n", hh, hh);
 
 }
 
