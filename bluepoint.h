@@ -41,6 +41,9 @@ ulong   bluepoint_crypthash(char *buff, int blen, char *pass, int plen);
 char    *bluepoint_fromhex(char *str, int len, char *out, int *olen);
 char    *bluepoint_tohex(char *str, int len, char *out, int *olen);
 
+unsigned long long   bluepoint_hash64(const char *buff, int blen);
+unsigned long long bluepoint_crypthash64(const char *buff, int blen, char *pass, int plen);
+
 #ifdef DEF_DUMPHEX
 char 	*bluepoint_dumphex(char *str, int len);
 #endif

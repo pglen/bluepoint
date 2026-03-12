@@ -104,6 +104,9 @@
 
 #include "bluepoint.h"
 
+#define     ROTATE_LONG_LONG_RIGHT(x, n) (((x) >> (n))  | ((x) << (64 - (n))))
+#define     ROTATE_LONG_LONG_LEFT(x, n) (((x) << (n))  | ((x) >> (64 - (n))))
+
 #define     ROTATE_LONG_RIGHT(x, n) (((x) >> (n))  | ((x) << (32 - (n))))
 #define     ROTATE_LONG_LEFT(x, n) (((x) << (n))  | ((x) >> (32 - (n))))
 
@@ -142,15 +145,14 @@ void    bluepoint_encrypt(char *buff, int blen, char *pass, int plen)
         {
         return;
         }
-
    if(functrace)
        {
+       #ifdef DEF_DUMPHEX
        printf("bluepoint_encrypt\nbuff=%s\n", bluepoint_dumphex(buff, blen));
        printf("pass=%s\n", bluepoint_dumphex(pass, plen) );
+       #endif
        }
-
     prep_pass(pass, plen, newpass);
-
     do_encrypt(buff, blen, newpass, passlim);
 }
 
@@ -169,12 +171,12 @@ void    bluepoint_decrypt(char *buff, int blen, char *pass, int plen)
 
     if(functrace)
         {
-        printf("bluepoint_decrypt()\nbuff=%s\n", bluepoint_dumphex(buff, blen));
-        printf("pass=%s\n", bluepoint_dumphex(pass, plen) );
+        #ifdef DEF_DUMPHEX
+            printf("bluepoint_decrypt()\nbuff=%s\n", bluepoint_dumphex(buff, blen));
+            printf("pass=%s\n", bluepoint_dumphex(pass, plen) );
+        #endif
         }
-
     prep_pass(pass, plen, newpass);
-
     do_decrypt(buff, blen, newpass, passlim);
 }
 
@@ -210,7 +212,9 @@ void    prep_pass(char *pass, int plen, char *newpass)
     if(verbose)
         {
         printf("prep_pass() eVEC: ");
+        #ifdef DEF_DUMPHEX
         bluepoint_dumphex(vec2, vlen);
+        #endif
         printf("\n");
         }
 
@@ -227,22 +231,35 @@ void    prep_pass(char *pass, int plen, char *newpass)
 //# Implementing the following 'C' code
 //#
 //#   ret_val ^= (unsigned long)*name;
-//#   ret_val  = ROTATE_LONG_RIGHT(ret_val, 10);          /* rotate right */sub hash
+//#   ret_val  = ROTATE_LONG_LONG_RIGHT(ret_val, 10);          /* rotate right */sub hash
 //#
 
 ulong   bluepoint_hash(char *buff, int blen)
 
 {
-    unsigned long    sum = 0;
+    unsigned long sum = 0xabababab;
     int     loop;
     char    aa, aa2, aa3;
 
     for (loop = 0; loop < blen; loop++)
         {
         sum ^= (unsigned char)buff[loop];
-        sum = ROTATE_LONG_RIGHT(sum, 10);          /* rotate right */
+        sum ^= ROTATE_LONG_LEFT(sum, 3);          /* rotate right */
         }
+    return sum;
+}
 
+unsigned long long   bluepoint_hash64(const char *buff, int blen)
+
+{
+    unsigned long long  sum = 0xabababab;
+    int     loop;
+
+    for (loop = 0; loop < blen; loop++)
+        {
+        sum ^= (unsigned char)buff[loop];
+        sum ^= ROTATE_LONG_LONG_RIGHT(sum, 20);    /* rotate right */
+        }
     return sum;
 }
 
@@ -265,6 +282,26 @@ ulong   bluepoint_crypthash(char *buff, int blen, char *pass, int plen)
 
     bluepoint_encrypt(duplicate, blen, pass, plen);
     sum = bluepoint_hash(duplicate, blen);
+
+    free(duplicate);
+    return(sum);
+}
+
+unsigned long long bluepoint_crypthash64(const char *buff, int blen, char *pass, int plen)
+
+{
+    unsigned long long  sum = 0;
+
+    // Duplicate buffer
+    char *duplicate = (char *)malloc(blen + 4);
+    if(!duplicate)
+        {
+        return(0LL);
+        }
+    memcpy(duplicate, buff, blen);
+
+    bluepoint_encrypt(duplicate, blen, pass, plen);
+    sum = bluepoint_hash64(duplicate, blen);
 
     free(duplicate);
     return(sum);
@@ -454,7 +491,7 @@ char    *bluepoint_fromhex(char *str, int len, char *out, int *olen)
 
 #ifdef DEF_DUMPHEX
 
-char buff[2056];
+static char buff[2056];
 
 char    *bluepoint_dumphex(char *str, int len)
 
@@ -465,7 +502,6 @@ char    *bluepoint_dumphex(char *str, int len)
         {
         printf("bluepoint_dumphex str=%p len=%d ", str, len);
         }
-
     for (loop = 0; loop < len; loop++)
         {
         pos += sprintf(buff + pos, "-%02x", ( unsigned char)str[loop]);

@@ -17,6 +17,7 @@
 # ========================================================================
 # Makefile for bluepoint
 
+#bin_PROGRAMS =   benc2 bdec2 test_blue2 encrypt_blue2 decrypt_blue2
 
 am__is_gnu_make = { \
   if test -z '$(MAKELEVEL)'; then \
@@ -91,8 +92,6 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = x86_64-pc-linux-gnu
 host_triplet = x86_64-pc-linux-gnu
-bin_PROGRAMS = benc2$(EXEEXT) bdec2$(EXEEXT) test_blue2$(EXEEXT) \
-	encrypt_blue2$(EXEEXT) decrypt_blue2$(EXEEXT)
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -106,23 +105,6 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am__installdirs = "$(DESTDIR)$(bindir)"
-PROGRAMS = $(bin_PROGRAMS)
-bdec2_SOURCES = bdec2.c
-bdec2_OBJECTS = bdec2.$(OBJEXT)
-bdec2_LDADD = $(LDADD)
-benc2_SOURCES = benc2.c
-benc2_OBJECTS = benc2.$(OBJEXT)
-benc2_LDADD = $(LDADD)
-decrypt_blue2_SOURCES = decrypt_blue2.c
-decrypt_blue2_OBJECTS = decrypt_blue2.$(OBJEXT)
-decrypt_blue2_LDADD = $(LDADD)
-encrypt_blue2_SOURCES = encrypt_blue2.c
-encrypt_blue2_OBJECTS = encrypt_blue2.$(OBJEXT)
-encrypt_blue2_LDADD = $(LDADD)
-test_blue2_SOURCES = test_blue2.c
-test_blue2_OBJECTS = test_blue2.$(OBJEXT)
-test_blue2_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_$(V))
 am__v_P_ = $(am__v_P_$(AM_DEFAULT_VERBOSITY))
 am__v_P_0 = false
@@ -135,28 +117,8 @@ AM_V_at = $(am__v_at_$(V))
 am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))
 am__v_at_0 = @
 am__v_at_1 = 
-DEFAULT_INCLUDES = -I.
-depcomp = $(SHELL) $(top_srcdir)/depcomp
-am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/bdec2.Po ./$(DEPDIR)/benc2.Po \
-	./$(DEPDIR)/decrypt_blue2.Po ./$(DEPDIR)/encrypt_blue2.Po \
-	./$(DEPDIR)/test_blue2.Po
-am__mv = mv -f
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-AM_V_CC = $(am__v_CC_$(V))
-am__v_CC_ = $(am__v_CC_$(AM_DEFAULT_VERBOSITY))
-am__v_CC_0 = @echo "  CC      " $@;
-am__v_CC_1 = 
-CCLD = $(CC)
-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-AM_V_CCLD = $(am__v_CCLD_$(V))
-am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
-am__v_CCLD_0 = @echo "  CCLD    " $@;
-am__v_CCLD_1 = 
-SOURCES = bdec2.c benc2.c decrypt_blue2.c encrypt_blue2.c test_blue2.c
-DIST_SOURCES = bdec2.c benc2.c decrypt_blue2.c encrypt_blue2.c \
-	test_blue2.c
+SOURCES =
+DIST_SOURCES =
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -302,11 +264,12 @@ target_alias =
 top_build_prefix = 
 top_builddir = .
 top_srcdir = .
+BLUES = bluepoint.c bluepoint2.c bluepoint3.c
+ONES = 11111111
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
 .SUFFIXES:
-.SUFFIXES: .c .o .obj
 am--refresh: Makefile
 	@:
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
@@ -355,80 +318,6 @@ $(srcdir)/config.h.in:  $(am__configure_deps)
 
 distclean-hdr:
 	-rm -f config.h stamp-h1
-install-binPROGRAMS: $(bin_PROGRAMS)
-	@$(NORMAL_INSTALL)
-	@list='$(bin_PROGRAMS)'; test -n "$(bindir)" || list=; \
-	if test -n "$$list"; then \
-	  echo " $(MKDIR_P) '$(DESTDIR)$(bindir)'"; \
-	  $(MKDIR_P) "$(DESTDIR)$(bindir)" || exit 1; \
-	fi; \
-	for p in $$list; do echo "$$p $$p"; done | \
-	sed 's/$(EXEEXT)$$//' | \
-	while read p p1; do if test -f $$p \
-	  ; then echo "$$p"; echo "$$p"; else :; fi; \
-	done | \
-	sed -e 'p;s,.*/,,;n;h' \
-	    -e 's|.*|.|' \
-	    -e 'p;x;s,.*/,,;s/$(EXEEXT)$$//;$(transform);s/$$/$(EXEEXT)/' | \
-	sed 'N;N;N;s,\n, ,g' | \
-	$(AWK) 'BEGIN { files["."] = ""; dirs["."] = 1 } \
-	  { d=$$3; if (dirs[d] != 1) { print "d", d; dirs[d] = 1 } \
-	    if ($$2 == $$4) files[d] = files[d] " " $$1; \
-	    else { print "f", $$3 "/" $$4, $$1; } } \
-	  END { for (d in files) print "f", d, files[d] }' | \
-	while read type dir files; do \
-	    if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
-	    test -z "$$files" || { \
-	      echo " $(INSTALL_PROGRAM_ENV) $(INSTALL_PROGRAM) $$files '$(DESTDIR)$(bindir)$$dir'"; \
-	      $(INSTALL_PROGRAM_ENV) $(INSTALL_PROGRAM) $$files "$(DESTDIR)$(bindir)$$dir" || exit $$?; \
-	    } \
-	; done
-
-uninstall-binPROGRAMS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(bin_PROGRAMS)'; test -n "$(bindir)" || list=; \
-	files=`for p in $$list; do echo "$$p"; done | \
-	  sed -e 'h;s,^.*/,,;s/$(EXEEXT)$$//;$(transform)' \
-	      -e 's/$$/$(EXEEXT)/' \
-	`; \
-	test -n "$$list" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(bindir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(bindir)" && rm -f $$files
-
-clean-binPROGRAMS:
-	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
-
-mostlyclean-compile:
-	-rm -f *.$(OBJEXT)
-
-distclean-compile:
-	-rm -f *.tab.c
-
-include ./$(DEPDIR)/bdec2.Po # am--include-marker
-include ./$(DEPDIR)/benc2.Po # am--include-marker
-include ./$(DEPDIR)/decrypt_blue2.Po # am--include-marker
-include ./$(DEPDIR)/encrypt_blue2.Po # am--include-marker
-include ./$(DEPDIR)/test_blue2.Po # am--include-marker
-
-$(am__depfiles_remade):
-	@$(MKDIR_P) $(@D)
-	@echo '# dummy' >$@-t && $(am__mv) $@-t $@
-
-am--depfiles: $(am__depfiles_remade)
-
-.c.o:
-	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
-#	$(AM_V_CC)source='$<' object='$@' libtool=no \
-#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
-#	$(AM_V_CC_no)$(COMPILE) -c -o $@ $<
-
-.c.obj:
-	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
-#	$(AM_V_CC)source='$<' object='$@' libtool=no \
-#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
-#	$(AM_V_CC_no)$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -662,11 +551,8 @@ distcleancheck: distclean
 	       exit 1; } >&2
 check-am: all-am
 check: check-am
-all-am: Makefile $(PROGRAMS) config.h
+all-am: Makefile config.h
 installdirs:
-	for dir in "$(DESTDIR)$(bindir)"; do \
-	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
-	done
 install: install-am
 install-exec: install-exec-am
 install-data: install-data-am
@@ -697,18 +583,12 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
+clean-am: clean-generic mostlyclean-am
 
 distclean: distclean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
-		-rm -f ./$(DEPDIR)/bdec2.Po
-	-rm -f ./$(DEPDIR)/benc2.Po
-	-rm -f ./$(DEPDIR)/decrypt_blue2.Po
-	-rm -f ./$(DEPDIR)/encrypt_blue2.Po
-	-rm -f ./$(DEPDIR)/test_blue2.Po
 	-rm -f Makefile
-distclean-am: clean-am distclean-compile distclean-generic \
-	distclean-hdr distclean-tags
+distclean-am: clean-am distclean-generic distclean-hdr distclean-tags
 
 dvi: dvi-am
 
@@ -728,7 +608,7 @@ install-dvi: install-dvi-am
 
 install-dvi-am:
 
-install-exec-am: install-binPROGRAMS
+install-exec-am:
 
 install-html: install-html-am
 
@@ -753,17 +633,12 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 	-rm -rf $(top_srcdir)/autom4te.cache
-		-rm -f ./$(DEPDIR)/bdec2.Po
-	-rm -f ./$(DEPDIR)/benc2.Po
-	-rm -f ./$(DEPDIR)/decrypt_blue2.Po
-	-rm -f ./$(DEPDIR)/encrypt_blue2.Po
-	-rm -f ./$(DEPDIR)/test_blue2.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
 mostlyclean: mostlyclean-am
 
-mostlyclean-am: mostlyclean-compile mostlyclean-generic
+mostlyclean-am: mostlyclean-generic
 
 pdf: pdf-am
 
@@ -773,26 +648,24 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-binPROGRAMS
+uninstall-am:
 
 .MAKE: all install-am install-strip
 
-.PHONY: CTAGS GTAGS TAGS all all-am am--depfiles am--refresh check \
-	check-am clean clean-binPROGRAMS clean-cscope clean-generic \
-	cscope cscopelist-am ctags ctags-am dist dist-all dist-bzip2 \
-	dist-gzip dist-lzip dist-shar dist-tarZ dist-xz dist-zip \
-	dist-zstd distcheck distclean distclean-compile \
+.PHONY: CTAGS GTAGS TAGS all all-am am--refresh check check-am clean \
+	clean-cscope clean-generic cscope cscopelist-am ctags ctags-am \
+	dist dist-all dist-bzip2 dist-gzip dist-lzip dist-shar \
+	dist-tarZ dist-xz dist-zip dist-zstd distcheck distclean \
 	distclean-generic distclean-hdr distclean-tags distcleancheck \
 	distdir distuninstallcheck dvi dvi-am html html-am info \
-	info-am install install-am install-binPROGRAMS install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic pdf pdf-am ps ps-am tags tags-am uninstall \
-	uninstall-am uninstall-binPROGRAMS
+	info-am install install-am install-data install-data-am \
+	install-dvi install-dvi-am install-exec install-exec-am \
+	install-html install-html-am install-info install-info-am \
+	install-man install-pdf install-pdf-am install-ps \
+	install-ps-am install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-generic pdf pdf-am ps ps-am tags \
+	tags-am uninstall uninstall-am
 
 .PRECIOUS: Makefile
 
@@ -802,44 +675,70 @@ all: tools
 help:
 	@echo Targets: git build test
 
-build: tools
-	gcc -c bluepoint.c
-	gcc -c bluepoint2.c
-	gcc -c bluepoint3.c
+build:  bluepoint.c bluepoint2.c bluepoint3.c
+	@gcc -c bluepoint.c
+	@gcc -c bluepoint2.c
+	@gcc -c bluepoint3.c
 
-tools: benc2 bdec2 test_blue test_blue2 test_blue3 \
-        encrypt_blue2 decrypt_blue2
-
-#blueencrypt
+tools: test_blue test_blue2 test_blue3              \
+        bencbdec                                    \
+        encrypt_blue  decrypt_blue                  \
+        encrypt_blue2 decrypt_blue2                 \
+        encrypt_blue3 decrypt_blue3
 
 test: tools
 	@./test_blue2 > tempfile
+	@echo "Tests pass if diff (below) is silent."
 	@diff test_blue2.org tempfile
 	@rm tempfile
 
-benc2:  benc2.c hs_crypt.c bluepoint2.o  bluepoint3.o
-	gcc  ${CFLAGS} bluepoint2.o  bluepoint3.o benc2.c -o benc2
+test2:
+	@echo ${ONES} >ones
+	@./bencbdec -e -p 1234 -f ones > aa
+	@./bencbdec -d -p 1234 -f aa > bb
+	@echo "Tests pass if diff (below) is silent."
+	@diff ones bb
+	@rm -f ones aa bb
 
-bdec2:  bdec2.c hs_crypt.c  bluepoint2.o  bluepoint3.o
-	gcc  ${CFLAGS} bluepoint2.o  bluepoint3.o bdec2.c -o bdec2
+test3:
+	@echo -n ${ONES} >ones
+	@./bencbdec -e -p 1234 ${ONES} | ./bencbdec -d -p 1234 -f - > bb
+	@echo "Tests pass if diff (below) is silent."
+	@diff ones bb
+	@rm -f ones aa bb
 
-test_blue: test_blue.c  bluepoint.o hs_crypt.c
-	gcc  bluepoint.o test_blue.c -o test_blue
+bencbdec: ${BLUES} hs_crypt.c bencbdec.c
+	gcc  ${CFLAGS} ${BLUES} bencbdec.c -o bencbdec
 
-test_blue2: test_blue2.c  bluepoint2.o hs_crypt.c
-	gcc  bluepoint2.o  bluepoint3.o test_blue2.c -o test_blue2
+test_blue: ${BLUES} test_blue.c hs_crypt.c
+	gcc  bluepoint.c test_blue.c -o test_blue
 
-test_blue3: test_blue3.c hs_crypt.c  bluepoint3.o
-	gcc  bluepoint3.o  test_blue3.c -o test_blue3
+test_blue2: ${BLUES} test_blue2.c  hs_crypt.c
+	gcc  bluepoint2.c  bluepoint3.c test_blue2.c -o test_blue2
 
-blueencrypt:  blueencrypt.c bluepoint.o
-	gcc blueencrypt.c bluepoint.o -o blueencrypt
+test_blue3: ${BLUES} test_blue3.c hs_crypt.c
+	gcc  bluepoint3.c  test_blue3.c -o test_blue3
 
-encrypt_blue2:  encrypt_blue2.c  bluepoint2.o hs_crypt.c
-	gcc  ${CFLAGS} bluepoint2.o encrypt_blue2.c -o encrypt_blue2
+test_dump: test_dump.c hs_crypt.c  bluepoint3.c
+	gcc  bluepoint3.c  test_dump.c -o test_dump
 
-decrypt_blue2:  decrypt_blue2.c  bluepoint2.o hs_crypt.c
-	gcc  ${CFLAGS} bluepoint2.o decrypt_blue2.c -o decrypt_blue2
+encrypt_blue:  encrypt_blue.c  bluepoint.c hs_crypt.c
+	gcc  ${CFLAGS} bluepoint.c encrypt_blue.c -o encrypt_blue
+
+decrypt_blue:  decrypt_blue.c  bluepoint.c hs_crypt.c
+	gcc  ${CFLAGS} bluepoint.c decrypt_blue.c -o decrypt_blue
+
+encrypt_blue2:  encrypt_blue2.c  bluepoint2.c hs_crypt.c
+	gcc  ${CFLAGS} bluepoint2.c encrypt_blue2.c -o encrypt_blue2
+
+decrypt_blue2:  decrypt_blue2.c  bluepoint2.c hs_crypt.c
+	gcc  ${CFLAGS} bluepoint2.c decrypt_blue2.c -o decrypt_blue2
+
+encrypt_blue3:  encrypt_blue3.c  bluepoint3.c hs_crypt.c
+	gcc  ${CFLAGS} bluepoint3.c encrypt_blue3.c -o encrypt_blue3
+
+decrypt_blue3:  decrypt_blue3.c  bluepoint3.c hs_crypt.c
+	gcc  ${CFLAGS} bluepoint3.c decrypt_blue3.c -o decrypt_blue3
 
 git:
 	git add .
@@ -854,9 +753,15 @@ clean:
 	@-rm -f a.out
 	@-rm -f aa bb cc *.o  > /dev/null 2>&1
 	@-rm -f test_blue test_blue2 test_blue3 block_blue > /dev/null 2>&1
-	@-rm -f study/tread2 benc2 bdec2 > /dev/null 2>&1
+	@-rm -f study/tread2  bencbdec > /dev/null 2>&1
+	@-rm -f encrypt_blue  decrypt_blue  > /dev/null 2>&1
 	@-rm -f encrypt_blue2 decrypt_blue2 > /dev/null 2>&1
+	@-rm -f encrypt_blue3 decrypt_blue3 > /dev/null 2>&1
 	@-rm -f block_blue2 > /dev/null 2>&1
+
+md5sum:
+	@rm md5sum.txt
+	@find . -maxdepth 1 -type f -exec  md5sum {}  >> md5sum.txt \;
 
 # EOF
 

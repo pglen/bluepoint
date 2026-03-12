@@ -10,8 +10,8 @@
 
 #include "bluepoint.h"
 
-//char orig[128] = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
-char orig[128] = "aaaa";
+char orig[128] = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
+//char orig[128] = "aaaa";
 char copy[128] = "";
 //char pass[128] = "01234456789";
 //char pass[128] = "0123445678901234456789012344567890";
@@ -20,7 +20,7 @@ char pass[128] = "1234";
 int main(int argc, char *argv[])
 
 {
-	long hh;
+	unsigned long hh;
 
 	strncpy(copy, orig, sizeof(copy));
 
@@ -81,11 +81,12 @@ int main(int argc, char *argv[])
 	//printf("decrypted='%s'\n", orig);
 
 	printf("HASH:\n");
-	hh = bluepoint_hash(copy, slen);
+	//printf("HASH: %s %d\n", copy, slen);
+	hh = bluepoint_hash64(copy, slen);
     printf("%ld 0x%08lx\n", hh, hh);
 
 	printf("CRYPTHASH: \n");
-	hh = bluepoint_crypthash(copy, slen, pass, plen);
+	hh = bluepoint_crypthash64(copy, slen, pass, plen);
     printf("%ld 0x%08lx\n", hh, hh);
 
 }

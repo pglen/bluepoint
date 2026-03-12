@@ -344,15 +344,14 @@ void    prep_pass(char *pass, int plen, char *newpass)
 ulong   bluepoint2_hash(char *buff, int blen)
 
 {
-    unsigned long    sum = 0;
+    unsigned long    sum = 0xabababab;
     int     loop;
     char    aa, aa2, aa3;
 
     for (loop = 0; loop < blen; loop++)
         {
         sum ^= (unsigned char)buff[loop];
-        //sum = ROTATE_LONG_RIGHT(sum, 1);          /* rotate right */
-        sum = ROTATE_LONG_LEFT(sum, 3);
+        sum ^= ROTATE_LONG_LEFT(sum, 3);
         }
     return sum;
 }
@@ -360,13 +359,13 @@ ulong   bluepoint2_hash(char *buff, int blen)
 unsigned long long   bluepoint2_hash64(char *buff, int blen)
 
 {
-    unsigned long long  sum = 0;
+    unsigned long long  sum = 0xabababab;
     int     loop;
 
     for (loop = 0; loop < blen; loop++)
         {
         sum ^= (unsigned char)buff[loop];
-        sum = ROTATE_LONG_LONG_RIGHT(sum, 20);    /* rotate right */
+        sum ^= ROTATE_LONG_LONG_RIGHT(sum, 10);    /* rotate right */
         }
     return sum;
 }

@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
     //bluepoint3_set_verbose(1);
 
     char orig2[128];
-    strcpy(orig2, orig);
+    strncpy(orig2, orig, 127);
     bluepoint3_encrypt(orig2, slen, pass, plen);
 
     printf("ENCRYPTED: \n");
@@ -77,13 +77,14 @@ int main(int argc, char *argv[])
     free(tmp);
     printf("END ENCRYPTED\n");
 
-    printf("HASH:\n");
+    //printf("HASH:\n");
+    printf("HASH: '%s' %d\n", copy, slen);
     hh = bluepoint3_hash(copy, slen);
-    printf("%lu 0x%08lx\n", hh, hh);
+    printf("%lu 0x%lx\n", hh, hh);
 
     printf("CRYPTHASH: \n");
     hh = bluepoint3_crypthash(copy, slen, pass, plen);
-    printf("%lu 0x%08lx\n", hh, hh);
+    printf("%lu 0x%lx\n", hh, hh);
 
     printf("HASH64:\n");
     unsigned long long int hhh = bluepoint3_hash64(copy, slen);
