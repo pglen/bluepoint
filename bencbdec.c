@@ -1,14 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////
-// Bluepoint2 test encrypter. Outputs to stdout.
+// Bluepointx test encrypter. Outputs to stdout.
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <getopt.h>
-
-//include <fcntl.h>
-//include <sys/types.h>
-//include <sys/stat.h>
 
 #include <linux/limits.h>
 
@@ -143,18 +139,19 @@ void help()
 {
     printf("Usage: bencbdec [options] [ORGTEXT] \n");
     printf("Options:\n");
-    printf("       -p PASS    --pass PASS     -  the password.\n");
+    printf("       -p PASS    --pass PASS     -  the password. (quotes for embedded spaces)\n");
     printf("       -f FILE    --file FILE     -  the file to operate on ('-' for stdin)\n");
     printf("       -e         --enc           -  encrypt to stdout\n");
     printf("       -d         --dec           -  decrypt to stdout\n");
-    printf("       -s         --hash          -  print hash.\n");
-    printf("       -S         --hash64        -  print 64-bit hash.\n");
+    printf("       -s         --hash          -  print hexadecimal hash\n");
+    printf("       -S         --hash64        -  print 64-bit hex hash\n");
     printf("       -a ALG     --algo ALG      -  select algorythm (1 or 2 or 3) def=3\n");
-    printf("       -r ROUNDS  --rounds ROUNDS -  number of rounds for algorythm\n");
-    printf("       -v         --verbose       -  verbosity level.\n");
+    printf("       -r ROUNDS  --rounds ROUNDS -  number of rounds for algorythm \n");
+    printf("       -v         --verbose       -  increase verbosity level (for tests)\n");
     printf("       -h         --help          -  help (this screen)\n");
     printf("Must specify one of -e -d -s -S. PASS is mandatory.\n");
     printf("Needs FILE or ORGTEXT to supply data to operate on. FILE has precedence.\n");
+    exit(0);
 }
 
 static struct option long_options[] = {
@@ -191,7 +188,6 @@ int     parse_comline(int argc, char *argv[])
                 if(strcmp(long_options[opt_index].name, "help") == 0)
                     {
                     help();
-                    exit(0);
                     }
                 if(strcmp(long_options[opt_index].name, "pass") == 0)
                     {
@@ -253,7 +249,6 @@ int     parse_comline(int argc, char *argv[])
 
             case 'h':
                 help();
-                exit(1);
             break;
 
             case 'p':
@@ -267,7 +262,6 @@ int     parse_comline(int argc, char *argv[])
             case '?':
                //printf ("Invalid option ? %s\n", optarg);
                help();
-               exit(1);
             break;
             }
         }
@@ -288,12 +282,12 @@ int     main(int argc, char *argv[])
         }
     if(alg < 1 || alg > 3)
         {
-        fprintf(stderr, "Must specify alorythm as 1 or 2 or 3\n");
+        fprintf(stderr, "Must specify valid algorithm as -a 1 or -a 2 or -a 3\n");
         exit(1);
         }
     if(pass[0] == '\0')
         {
-        fprintf(stderr, "Must specify password\n");
+        fprintf(stderr, "Must specify password (-p or --pass)\n");
         exit(1);
         }
     //printf("alg=%d pass='%s' file='%s'\n", alg, pass, file);

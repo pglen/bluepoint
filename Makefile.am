@@ -83,11 +83,8 @@ git:
 	git push
 
 clean:
-	@-rm -f *~
-	@-rm -f \#*
+	@-rm -f *~ \#* a.out
 	@-rm -f *.o
-	@-rm -f *.exe
-	@-rm -f a.out
 	@-rm -f aa bb cc *.o  > /dev/null 2>&1
 	@-rm -f test_blue test_blue2 test_blue3 block_blue > /dev/null 2>&1
 	@-rm -f study/tread2  bencbdec > /dev/null 2>&1

@@ -67,44 +67,11 @@
 // END ENCRYPTED
 // decrypted='abcdefghijklmnopqrstuvwxyz'
 //
-//HASH:
-//2413930225017553275 0x218000c006c0017b
 //CRYPTHASH:
-//5027360306970388650 0x45c4c59026de68aa
+//6b4b21a556727ea4
 //
-// Original hashes:
-// HASH:
-// -754656719 0xd304da31
-// CRYPTHASH:
-// -1382909316 0xad927a7c
-//
-// The reference implementation for version 2.0 is not documented.
-//
-///////////////////////////////////////////////////////////////////////////
-// At this point PERL and C implementations exist, here is a session dump:
-//
-// ant:/srv/www/archive/bluepoint/bluepoint3 # make; ./test_blue
-// make: `test_blue' is up to date.
-// orignal='abcdefghijklmnopqrstuvwxyz' pass='1234'
-// ENCRYPTED:
-// -2b-e4-5c-46-75-9e-05-c3-74-d4-35-76-5b-84-10-f8-b7-7e-f4-07-0a-37-50-07-69-3d
-// END ENCRYPTED
-// decrypted='abcdefghijklmnopqrstuvwxyz'
-// HASH:
-// -754656719 0xd304da31
-// CRYPTHASH:
-// -1382909316 0xad927a7c
-//
-// ant:/srv/www/archive/bluepoint/bluepoint3 # perl test_blue.pl
-// original='abcdefghijklmnopqrstuvwxyz'  pass='1234'
-// ENCRYPTED:
-// -2b-e4-5c-46-75-9e-05-c3-74-d4-35-76-5b-84-10-f8-b7-7e-f4-07-0a-37-50-07-69-3d
-// END ENCRYPTED
-// decrypted='abcdefghijklmnopqrstuvwxyz'
-// HASH:
-// -754656719  0xd304da31
-// CryptHASH:
-// -1382909316  0xad927a7c
+//CRYPTHASH64:
+//45c4c59026de68aa
 //
 ///////////////////////////////////////////////////////////////////////////
 

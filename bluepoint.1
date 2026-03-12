@@ -1,0 +1,44 @@
+.\" Copyright (C) 2026 Peter Glen
+.\"
+.\" This is free software; you can redistribute it and/or modify it
+.\" under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation; either version 2 of the License, or
+.\" (at your option) any later version.
+.\"
+.\" This program is distributed in the hope that it will be useful, but
+.\" WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+.\" General Public License for more details.
+.\"
+
+.TH bluepoint 1 Fri 13.Mar.2026" "Peter Glen"
+.SH NAME
+bluepoint \- Bluepoint Encryption Algorythm
+.SH SYNOPSIS
+.B bencbdec [options] [orgtext]
+.SH DESCRIPTION
+.B BLUEPOINT
+is an encryption algorythm. The bencbdec utility is provided to drive the
+algorythm.
+
+Usage: bencbdec [options] [ORGTEXT]
+
+.SH OPTIONS
+  -p PASS    --pass PASS     -  the password.
+  -f FILE    --file FILE     -  the file to operate on ('-' for stdin)
+  -e         --enc           -  encrypt to stdout
+  -d         --dec           -  decrypt to stdout
+  -s         --hash          -  print hexadecimal hash
+  -S         --hash64        -  print 64-bit hex hash
+  -a ALG     --algo ALG      -  select algorythm (1 or 2 or 3) def=3
+  -r ROUNDS  --rounds ROUNDS -  number of rounds for algorythm
+  -v         --verbose       -  increase verbosity level (for tests)
+  -h         --help          -  help (this screen)
+
+See the info page for more details.
+
+.SH "SEE ALSO"
+See the bluepoint info page for more details.
+.SH AUTHOR
+Peter Glen <peterglen99@gmail.com>
+
