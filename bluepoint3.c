@@ -9,6 +9,7 @@
       ----  -----------     ----------      ------------------------------
       0.00  aug.31.2017     Peter Glen      Initial version.
       0.00  Sun 16.Oct.2022 Peter Glen      Corrected reverse process
+      0.00  Thu 12.Mar.2026 Peter Glen      Cleanup
 
    ======================================================================= */
 

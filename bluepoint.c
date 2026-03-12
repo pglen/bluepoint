@@ -1,4 +1,17 @@
-// -------------------------------------------------------------------------
+
+/* =====[ bluepoint.c ]=========================================================
+
+   Description:         File encryption block by block. Original.
+
+   Revisions:
+
+      REV   DATE            BY              DESCRIPTION
+      ----  -----------     ----------      ------------------------------
+      0.00  aug.31.2017     Peter Glen      Initial version.
+      0.00  Thu 12.Mar.2026 Peter Glen      Cleanup
+
+   ======================================================================= */
+
 // Bluepoint encryption routines.
 //
 // Please note that this is an extraction of the main bluepoint2 code thread
@@ -53,6 +66,13 @@
 // -2b-e4-5c-46-75-9e-05-c3-74-d4-35-76-5b-84-10-f8-b7-7e-f4-07-0a-37-50-07-69-3d
 // END ENCRYPTED
 // decrypted='abcdefghijklmnopqrstuvwxyz'
+//
+//HASH:
+//2413930225017553275 0x218000c006c0017b
+//CRYPTHASH:
+//5027360306970388650 0x45c4c59026de68aa
+//
+// Original hashes:
 // HASH:
 // -754656719 0xd304da31
 // CRYPTHASH:

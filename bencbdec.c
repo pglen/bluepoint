@@ -6,6 +6,12 @@
 #include <string.h>
 #include <getopt.h>
 
+//include <fcntl.h>
+//include <sys/types.h>
+//include <sys/stat.h>
+
+#include <linux/limits.h>
+
 #include "bluepoint.h"
 #include "bluepoint2.h"
 #include "bluepoint3.h"
@@ -13,83 +19,157 @@
 char buff[4096];
 char pass[128];
 
+//void    dump_buff(const char *ptr, int len)
+//{
+//    int olen = 3 * len;
+//    char *ret = malloc(olen);
+//    if(!ret) return;
+//    bluepoint3_tohex(ptr, len, ret, &olen);
+//    ret[olen] = '\0';
+//    fprintf(stderr, "dump: %s\n", ret);
+//    free(ret);
+//}
+
 int verbose = 0;
 int alg     = 3;
 int rounds  = 0;
 int encdec  = 0;
 
-//char copy[1000] = "";
-//char cyph[1000] = "";
-
 char orig[1000] = ""; //abcdefghijklmnopqrstuvwxyz";
 char pass[128] = "";
-char file[256] = "";
+char file[PATH_MAX] = "";
 
-static struct option long_options[] = {
-   {"help", 0, 0, 0},
-   {"enc",  0, 0, 0},
-   {"dec",  0, 0, 0},
-   {"alg",  1, 0, 0},
-   {"pass", 1, 0, 0},
-   {"file", 1, 0, 0},
-   {0,      0, 0, 0}
-};
-
-int     docrypt(char *ptr, int len, const char *pass, int plen)
+static  int     docrypt(char *ptr, int len, const char *pass, int plen)
 {
+    if(verbose)
+        fprintf(stderr, "mode=%d alg=%d len=%d pass: '%s' plen=%d\n",
+                        encdec, alg, len, pass, plen);
+    //dump_buff(ptr, len);
+
     if(encdec == 1)
         {
         if(alg == 3)
             {
-            //printf("enc buff %s %d pass %s %d\n", ptr, len, pass, plen);
             bluepoint3_encrypt(ptr, len, (char *)pass, plen);
             }
         if(alg == 2)
             {
-            //printf("enc buff %s %d pass %s %d\n", ptr, len, pass, plen);
             bluepoint2_encrypt(ptr, len, (char*)pass, plen);
             }
         if(alg == 1)
             {
-            //printf("enc buff %s %d pass %s %d\n", ptr, len, pass, plen);
             bluepoint_encrypt(ptr, len, (char*)pass, plen);
             }
         }
-    if(encdec == 2)
+    else if(encdec == 2)
         {
         if(alg == 3)
             {
-            //printf("enc buff %s %d pass %s %d\n", ptr, len, pass, plen);
             bluepoint3_decrypt(ptr, len, (char*)pass, plen);
             }
         if(alg == 2)
             {
-            //printf("enc buff %s %d pass %s %d\n", ptr, len, pass, plen);
             bluepoint2_decrypt(ptr, len, (char*)pass, plen);
             }
         if(alg == 1)
             {
-            //printf("enc buff %s %d pass %s %d\n", ptr, len, pass, plen);
             bluepoint_decrypt(ptr, len, (char*)pass, plen);
             }
         }
+    //dump_buff(ptr, len);
+    //fprintf(stderr, "buff res: '%s'\n", ptr);
 }
 
-static char options[] = "vedhp:a:r:f:";
+static  void    dohash64(char *ptr, int len, const char *pass, int plen)
+{
+    long long hhh  = 0;
+    //printf("hash buff %s %d pass %s %d\n", ptr, len, pass, plen);
+    if(alg == 3)
+        {
+        hhh = bluepoint3_crypthash64(ptr, len, (char*)pass, plen);
+        }
+    if(alg == 2)
+        {
+        hhh = bluepoint2_crypthash64(ptr, len, (char*)pass, plen);
+        }
+    if(alg == 1)
+        {
+        hhh = bluepoint_crypthash64(ptr, len, (char*)pass, plen);
+        }
+    printf("%llx\n", hhh);
+}
+
+static  void  dohash(char *ptr, int len, const char *pass, int plen)
+{
+    long hhh = 0;
+    //printf("hash buff %s %d pass %s %d\n", ptr, len, pass, plen);
+    if(alg == 3)
+        {
+        hhh = bluepoint3_crypthash(ptr, len, (char*)pass, plen);
+        }
+    if(alg == 2)
+        {
+        hhh = bluepoint2_crypthash(ptr, len, (char*)pass, plen);
+        }
+    if(alg == 1)
+        {
+        hhh = bluepoint_crypthash(ptr, len, (char*)pass, plen);
+        }
+    printf("%lx\n", hhh);
+}
+
+static  void    doall(char *ptr, int len, const char *pass, int plen)
+
+{
+    if(encdec == 4)
+        {
+        dohash64(ptr, len, pass, plen);
+        }
+    else if(encdec == 3)
+        {
+        dohash(ptr, len, pass, plen);
+        }
+    else
+        {
+        docrypt(ptr, len, pass, plen);
+        for (int loop = 0; loop < len; loop++)
+            printf("%c", ptr[loop]);
+        fflush(stdout);
+        }
+}
+
 void help()
 
 {
-    printf("\nUsage: bencbdec [options] [orgtext] \n");
-    printf(" Options:\n");
+    printf("Usage: bencbdec [options] [ORGTEXT] \n");
+    printf("Options:\n");
     printf("       -p PASS    --pass PASS     -  the password.\n");
-    printf("       -f FILE    --file FILE     -  the file to operate on ('-' for stdin).\n");
-    printf("       -e         --enc           -  encrypt.\n");
-    printf("       -d         --dec           -  decrypt.\n");
-    printf("       -a ALG     --algo ALG      -  select algorythm (1 2 3) def: 3.\n");
-    printf("       -r ROUNDS  --rounds ROUNDS -  number of rounds for algorythm.\n");
+    printf("       -f FILE    --file FILE     -  the file to operate on ('-' for stdin)\n");
+    printf("       -e         --enc           -  encrypt to stdout\n");
+    printf("       -d         --dec           -  decrypt to stdout\n");
+    printf("       -s         --hash          -  print hash.\n");
+    printf("       -S         --hash64        -  print 64-bit hash.\n");
+    printf("       -a ALG     --algo ALG      -  select algorythm (1 or 2 or 3) def=3\n");
+    printf("       -r ROUNDS  --rounds ROUNDS -  number of rounds for algorythm\n");
     printf("       -v         --verbose       -  verbosity level.\n");
     printf("       -h         --help          -  help (this screen)\n");
+    printf("Must specify one of -e -d -s -S. PASS is mandatory.\n");
+    printf("Needs FILE or ORGTEXT to supply data to operate on. FILE has precedence.\n");
 }
+
+static struct option long_options[] = {
+   {"help",   0, 0, 0},
+   {"enc",    0, 0, 0},
+   {"dec",    0, 0, 0},
+   {"hash",   0, 0, 0},
+   {"hash64", 0, 0, 0},
+   {"alg",    1, 0, 0},
+   {"pass",   1, 0, 0},
+   {"file",   1, 0, 0},
+   {0,        0, 0, 0}
+};
+static char options[] = "vedsShp:a:r:f:";
+
 // Parse options
 int     parse_comline(int argc, char *argv[])
 {
@@ -133,30 +213,41 @@ int     parse_comline(int argc, char *argv[])
                     {
                     encdec = 2;
                     }
+                if(strcmp(long_options[opt_index].name, "hash") == 0)
+                    {
+                    encdec = 3;
+                    }
+                if(strcmp(long_options[opt_index].name, "hash64") == 0)
+                    {
+                    encdec = 4;
+                    }
+            break;
+
+            case 's':
+                encdec = 3;
+            break;
+
+            case 'S':
+                encdec = 4;
             break;
 
             case 'f':
-                //printf ("option f %s\n", optarg);
                 strncpy(file, optarg, sizeof(file));
             break;
 
             case 'v':
-                //printf ("option v %s\n", optarg);
-                verbose = 1;
+                verbose += 1;
             break;
 
             case 'e':
-                //printf ("option v %s\n", optarg);
                 encdec = 1;
             break;
 
             case 'd':
-                //printf ("option v %s\n", optarg);
                 encdec = 2;
             break;
 
             case 'a':
-                //printf ("option a %s\n", optarg);
                 alg = atoi(optarg);
             break;
 
@@ -166,13 +257,11 @@ int     parse_comline(int argc, char *argv[])
             break;
 
             case 'p':
-                //printf ("option p %s\n", optarg);
                 strncpy(pass, optarg, sizeof(pass));
             break;
 
             case 'r':
                 rounds = atoi(optarg);
-                //printf("rounds %d\n", rounds);
             break;
 
             case '?':
@@ -193,7 +282,8 @@ int     main(int argc, char *argv[])
 
     if(encdec == 0)
         {
-        fprintf(stderr, "Must specify one of -e or -d (--enc or --dec)\n");
+        fprintf(stderr,
+            "Must specify one of -e or -d or -s (--enc or --dec or --hash)\n");
         exit(1);
         }
     if(alg < 1 || alg > 3)
@@ -212,25 +302,22 @@ int     main(int argc, char *argv[])
         // Any comline strings?
         if(argc > optind)
             {
-            //printf("comline: argv[optind]='%s'\n", argv[optind]);
+            if(verbose > 1)
+                fprintf(stderr, "comline: argv[optind]='%s'\n", argv[optind]);
             strncpy(orig, argv[optind], sizeof(orig));
             int slen = strlen(orig), plen = strlen(pass);
-            docrypt(orig, slen, pass, plen);
-            for (int loop = 0; loop < slen; loop++)
-                {
-                putchar(orig[loop]);
-                }
+            doall(orig, slen, pass, plen);
             exit(0);
             }
         else
             {
-            fprintf(stderr, "Must specify file or string to encrypt.\n");
+            fprintf(stderr, "Must specify file or string to operate on.\n");
             exit(1);
             }
         }
     FILE *fp;
     if (file[0] == '-')
-        fp = stdin;
+        fp = stdin; //fdopen(0, "rb");
     else
         fp = fopen(file, "rb");
 
@@ -243,15 +330,15 @@ int     main(int argc, char *argv[])
     memset(buff, 0, sizeof(buff));
     while(1)
         {
-        int loop, len = fread(buff, 1, sizeof(buff), fp);
-        if(len == 0)            // Nothing
+        int len = fread(buff, 1, sizeof(buff), fp);
+        if(len <= 0)            // Nothing
             break;
-        docrypt(buff, len, pass, plen);
-        for (loop = 0; loop < len; loop++)
-            putchar(buff[loop]);
+        //printf("buff '%s'\n", buff);
+        doall(buff, len, pass, plen);
         if(len < sizeof(buff))  // Done
             break;
         }
+    fclose(fp);
     exit(0);
 }
 

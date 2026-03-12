@@ -1,4 +1,16 @@
-// -------------------------------------------------------------------------
+
+/* =====[ bluepoint2.c ]=========================================================
+
+   Description:         File encryption block by block.
+
+   Revisions:
+
+      REV   DATE            BY              DESCRIPTION
+      ----  -----------     ----------      ------------------------------
+      0.00  Thu 12.Mar.2026 Peter Glen      Cleanup
+
+   ======================================================================= */
+
 // Bluepoint encryption routines.
 //
 //   How it works:
@@ -47,23 +59,6 @@
 //  $hash       = bluepoint2_hash($orig, $pass);
 //  $crypthash  = bluepoint2_crypthash($orig, $pass);
 //
-// The reference implementation for version 2.0 contains a (default) sample
-// clear text and a sample cypher text. (exec: test_blue2)
-// Porting is correct if the new cypher text and hash is a duplicate of the following:
-//
-// orignal='abcdefghijklmnopqrstuvwxyz' pass='1234'
-// ENCRYPTED:
-// -d7-a2-55-bf-ec-3c-f6-e5-2d-ef-06-93-79-91-eb-2d-2a-f1-69-4a-59-e9-48-6f-61-05
-// END ENCRYPTED
-// HASH:
-// 3540310577 0xd304da31
-// CRYPTHASH:
-// 3349887638 0xc7ab3a96
-// HASH64:
-// 17370781859372208493 0xf1116a1116ae116d
-// CRYPTHASH64:
-// 16348308407135931823 0xe2e0dbe115de8daf
-
 ///////////////////////////////////////////////////////////////////////////
 
 #define _GNU_SOURCE

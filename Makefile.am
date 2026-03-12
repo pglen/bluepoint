@@ -17,10 +17,11 @@ build:  bluepoint.c bluepoint2.c bluepoint3.c
 	@gcc -c bluepoint3.c
 
 tools: test_blue test_blue2 test_blue3              \
-        bencbdec                                    \
-        encrypt_blue  decrypt_blue                  \
-        encrypt_blue2 decrypt_blue2                 \
-        encrypt_blue3 decrypt_blue3
+        bencbdec
+
+        #encrypt_blue  decrypt_blue                  \
+        #encrypt_blue2 decrypt_blue2                 \
+        #encrypt_blue3 decrypt_blue3
 
 test: tools
 	@./test_blue2 > tempfile
@@ -98,5 +99,9 @@ clean:
 md5sum:
 	@rm md5sum.txt
 	@find . -maxdepth 1 -type f -exec  md5sum {}  >> md5sum.txt \;
+
+install:
+	cp bencbdec /usr/local/bin
+
 
 # EOF
