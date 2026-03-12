@@ -37,6 +37,13 @@ Usage: bencbdec [options] [ORGTEXT]
 
 See the info page for more details.
 
+.SH EXAMPLE
+
+  ./bencbdec -e -p 1234 StringHere | ./bencbdec -d -p 1234 -f -
+
+The above line should ecrypt / decrypt the string 'StringHere' and print it
+to standard out.
+
 .SH "SEE ALSO"
 See the bluepoint info page for more details.
 .SH AUTHOR

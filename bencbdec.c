@@ -160,7 +160,7 @@ static struct option long_options[] = {
    {"dec",    0, 0, 0},
    {"hash",   0, 0, 0},
    {"hash64", 0, 0, 0},
-   {"alg",    1, 0, 0},
+   {"algo",   1, 0, 0},
    {"pass",   1, 0, 0},
    {"file",   1, 0, 0},
    {0,        0, 0, 0}
@@ -197,7 +197,7 @@ int     parse_comline(int argc, char *argv[])
                     {
                     strncpy(file, optarg, sizeof(file));
                     }
-                if(strcmp(long_options[opt_index].name, "alg") == 0)
+                if(strcmp(long_options[opt_index].name, "algo") == 0)
                     {
                     alg = atoi(optarg);
                     }
@@ -277,7 +277,7 @@ int     main(int argc, char *argv[])
     if(encdec == 0)
         {
         fprintf(stderr,
-            "Must specify one of -e or -d or -s (--enc or --dec or --hash)\n");
+    "Must specify one of -e or -d or -s or -S (--enc / --dec / --hash / --hash64)\n");
         exit(1);
         }
     if(alg < 1 || alg > 3)
