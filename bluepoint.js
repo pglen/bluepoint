@@ -137,6 +137,12 @@ function rotate_right(nnn, rrr)
     return  (nnn >>> rrr)  | (nnn << (32 - rrr));
 }
 
+function rotate_left(nnn, rrr)
+
+{
+    return  ((nnn << rrr) >>> 0) | (nnn >>> (32 - rrr));
+}
+
 
 function rotate8_right(nnn, rrr)
 
@@ -151,8 +157,6 @@ function rotate8_left(nnn, rrr)
     return  ((nnn << rrr) & 0xff) | ((nnn >>> (8 - rrr) ) & 0xff);
 }
 
-
-
 //# -----------------------------------------------------------------------
 //# Hash:
 //# use: hashvalue = hash(str)
@@ -160,18 +164,31 @@ function rotate8_left(nnn, rrr)
 function bluepoint_hash(ss)
 
 {
-    var len, aa = 0, bb, sum = 0, loop3;
+    var len, loop3, sum = 0xabababab >>> 0;
 
     //alert("hash: " + ss);
 
     len  = ss.length;
     for (loop3 = 0; loop3 < len; loop3++)
         {
-        aa = ss.charCodeAt(loop3);
+        aa = ss.charCodeAt(loop3) >>> 0;
         sum ^= aa;
-        sum = rotate_right(sum, 10);
-        }
+        sum = sum  >>> 0;
+        sum ^= rotate_left(sum, 5);
+        sum = sum  >>> 0;
 
+        sum += aa;
+        sum = sum  >>> 0;
+        sum ^= rotate_left(sum, 23);
+        sum = sum  >>> 0;
+
+        sum ^= aa;
+        sum = sum  >>> 0;
+        sum ^= rotate_left(sum, 13);
+        sum = sum  >>> 0;
+
+        //console.log(sum.toString(16))
+        }
     return sum;
 }
 

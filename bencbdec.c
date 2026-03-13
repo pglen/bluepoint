@@ -82,6 +82,44 @@ static  void    dohash64(char *ptr, int len, const char *pass, int plen)
     //printf("hash buff %s %d pass %s %d\n", ptr, len, pass, plen);
     if(alg == 3)
         {
+        hhh = bluepoint3_hash64(ptr, len);
+        }
+    if(alg == 2)
+        {
+        hhh = bluepoint2_hash64(ptr, len);
+        }
+    if(alg == 1)
+        {
+        hhh = bluepoint_hash64(ptr, len);
+        }
+    printf("%llx\n", hhh);
+}
+
+static  void  dohash(char *ptr, int len, const char *pass, int plen)
+{
+    uint hhh = 0;
+    //printf("dohash buff '%s' %d pass '%s' %d\n", ptr, len, pass, plen);
+    if(alg == 3)
+        {
+        hhh = bluepoint3_hash(ptr, len);
+        }
+    if(alg == 2)
+        {
+        hhh = bluepoint2_hash(ptr, len);
+        }
+    if(alg == 1)
+        {
+        hhh = bluepoint_hash(ptr, len);
+        }
+    printf("%x\n", hhh);
+}
+
+static  void     dochash64(char *ptr, int len, const char *pass, int plen)
+{
+    long long hhh  = 0;
+    //printf("hash buff %s %d pass %s %d\n", ptr, len, pass, plen);
+    if(alg == 3)
+        {
         hhh = bluepoint3_crypthash64(ptr, len, (char*)pass, plen);
         }
     if(alg == 2)
@@ -95,10 +133,10 @@ static  void    dohash64(char *ptr, int len, const char *pass, int plen)
     printf("%llx\n", hhh);
 }
 
-static  void  dohash(char *ptr, int len, const char *pass, int plen)
+static  void  dochash(char *ptr, int len, const char *pass, int plen)
 {
-    long hhh = 0;
-    //printf("hash buff %s %d pass %s %d\n", ptr, len, pass, plen);
+    uint hhh = 0;
+    //printf("chash buff %s %d pass %s %d\n", ptr, len, pass, plen);
     if(alg == 3)
         {
         hhh = bluepoint3_crypthash(ptr, len, (char*)pass, plen);
@@ -111,13 +149,21 @@ static  void  dohash(char *ptr, int len, const char *pass, int plen)
         {
         hhh = bluepoint_crypthash(ptr, len, (char*)pass, plen);
         }
-    printf("%lx\n", hhh);
+    printf("%x\n", hhh);
 }
 
 static  void    doall(char *ptr, int len, const char *pass, int plen)
 
 {
-    if(encdec == 4)
+    if(encdec == 6)
+        {
+        dochash64(ptr, len, pass, plen);
+        }
+    else if(encdec == 5)
+        {
+        dochash(ptr, len, pass, plen);
+        }
+    else if(encdec == 4)
         {
         dohash64(ptr, len, pass, plen);
         }
@@ -145,6 +191,8 @@ void help()
     printf("       -d         --dec           -  decrypt to stdout\n");
     printf("       -s         --hash          -  print hexadecimal hash\n");
     printf("       -S         --hash64        -  print 64-bit hex hash\n");
+    printf("       -c         --chash         -  print hexadecimal crypt hash\n");
+    printf("       -C         --chash64       -  print 64-bit hex crypt hash\n");
     printf("       -a ALG     --algo ALG      -  select algorythm (1 or 2 or 3) def=3\n");
     printf("       -r ROUNDS  --rounds ROUNDS -  number of rounds for algorythm \n");
     printf("       -v         --verbose       -  increase verbosity level (for tests)\n");
@@ -155,17 +203,20 @@ void help()
 }
 
 static struct option long_options[] = {
-   {"help",   0, 0, 0},
-   {"enc",    0, 0, 0},
-   {"dec",    0, 0, 0},
-   {"hash",   0, 0, 0},
-   {"hash64", 0, 0, 0},
-   {"algo",   1, 0, 0},
-   {"pass",   1, 0, 0},
-   {"file",   1, 0, 0},
-   {0,        0, 0, 0}
+   {"help",     0, 0, 0},
+   {"enc",      0, 0, 0},
+   {"dec",      0, 0, 0},
+   {"hash",     0, 0, 0},
+   {"hash64",   0, 0, 0},
+   {"chash",    0, 0, 0},
+   {"chash64",  0, 0, 0},
+   {"algo",     1, 0, 0},
+   {"pass",     1, 0, 0},
+   {"file",     1, 0, 0},
+   {0,          0, 0, 0}
 };
-static char options[] = "vedsShp:a:r:f:";
+
+static char options[] = "vedsScChp:a:r:f:";
 
 // Parse options
 int     parse_comline(int argc, char *argv[])
@@ -217,6 +268,14 @@ int     parse_comline(int argc, char *argv[])
                     {
                     encdec = 4;
                     }
+                if(strcmp(long_options[opt_index].name, "chash") == 0)
+                    {
+                    encdec = 5;
+                    }
+                if(strcmp(long_options[opt_index].name, "chash64") == 0)
+                    {
+                    encdec = 6;
+                    }
             break;
 
             case 's':
@@ -225,6 +284,14 @@ int     parse_comline(int argc, char *argv[])
 
             case 'S':
                 encdec = 4;
+            break;
+
+            case 'c':
+                encdec = 5;
+            break;
+
+            case 'C':
+                encdec = 6;
             break;
 
             case 'f':

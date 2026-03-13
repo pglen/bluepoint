@@ -8,24 +8,37 @@
 
 <script type="text/javascript" src="support.js"></script>
 <script type="text/javascript" src="bluepoint.js"></script>
-<script>
+<script type="text/javascript" src="mime.js"></script>
 
-    window.addEventListener('load', function()
+<script>
+org = "aaaa"
+orgpass = "1234"
+
+window.addEventListener('load', function()
     {
-    org = "aaaa"
     //console.log("Start");
     const orgOutput = document.getElementById('org');
-    orgOutput.innerHTML = "org: " + org
-
     const passOutput = document.getElementById('pass');
     const textOutput = document.getElementById('txt');
-    eeee = bluepoint_encrypt(org, passOutput.innerHTML);
     const binOutput = document.getElementById('bin');
+    const mimeOutput = document.getElementById('mime');
+    const mimeDecode = document.getElementById('decode');
+    const hashOutput = document.getElementById('hash');
+    const chashOutput = document.getElementById('chash');
+
+    orgOutput.innerHTML = "org: " + org
+    eeee = bluepoint_encrypt(org, passOutput.innerHTML);
     binOutput.innerHTML = "enc: " + dumphex(eeee);
     dddd = bluepoint_decrypt(eeee,  passOutput.innerHTML);
     textOutput.innerHTML = "dec: " + dddd;
-    display_time_in_status_line();
+    ccc = mime_encode(org)
+    mimeOutput.innerHTML =  "Mime enc: " + ccc;
+    mimeDecode.innerHTML =  "Mime dec: " + mime_decode(ccc);
+    hashOutput.innerHTML =  "Hash:  0x" + bluepoint_hash(org).toString(16);
+    chashOutput.innerHTML = "cHash: 0x" +
+                    bluepoint_crypthash(org, orgpass).toString(16);
 
+    display_time_in_status_line("status");
     } );
 </script>
 <body>
@@ -37,11 +50,15 @@
 <td width=10%>
 <td>
 <div id=org> Hello </div>
-pass: <div id=pass style="display:inline;"> 1234</div>
-<div id=bin> Hello</div>
-<div id=txt> Hello</div>
+pass: <div id=pass style="display:inline;">1234</div>
+<div id=bin>    Hello</div>
+<div id=txt>    Hello</div>
+<div id=mime>   Hello</div>
+<div id=decode> Hello</div>
+<div id=hash>   Hello</div>
+<div id=chash>  Hello</div>
 
-<tr><td align=center colspan=3>
+<tr><td align=center colspan=1>
 <br><div id=status> Status Line </div>
 
 </body>

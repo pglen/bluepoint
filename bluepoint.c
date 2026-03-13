@@ -78,6 +78,7 @@
 #include "stdio.h"
 #include "string.h"
 #include "stdlib.h"
+#include "limits.h"
 
 #define DEF_DUMPHEX  1   // undefine this if you do not want bluepoint_dumphex
 
@@ -221,18 +222,24 @@ void    prep_pass(char *pass, int plen, char *newpass)
 //#   ret_val  = ROTATE_LONG_LONG_RIGHT(ret_val, 10);          /* rotate right */sub hash
 //#
 
-ulong   bluepoint_hash(char *buff, int blen)
+uint    bluepoint_hash(char *buff, int blen)
 
 {
-    unsigned long sum = 0xabababab;
-    int     loop;
-    char    aa, aa2, aa3;
+    uint sum = 0xabababab;
 
-    for (loop = 0; loop < blen; loop++)
+    //printf("Start: ");
+    for (int loop = 0; loop < blen; loop++)
         {
-        sum ^= (unsigned char)buff[loop];
-        sum ^= ROTATE_LONG_LEFT(sum, 3);          /* rotate right */
+        unsigned char aa = (unsigned char) buff[loop];
+        sum ^= aa;
+        sum ^= ROTATE_LONG_LEFT(sum, 5);
+        sum += aa;
+        sum ^= ROTATE_LONG_LEFT(sum, 23);
+        sum ^= aa;
+        sum ^= ROTATE_LONG_LEFT(sum, 13);
+        //printf("%x ", sum);
         }
+    //printf("\n");
     return sum;
 }
 
@@ -254,10 +261,10 @@ unsigned long long   bluepoint_hash64(const char *buff, int blen)
 //# Crypt and hash:
 //# use: crypthash = bluepoint_crypthash($str, "pass")
 
-ulong   bluepoint_crypthash(char *buff, int blen, char *pass, int plen)
+uint   bluepoint_crypthash(char *buff, int blen, char *pass, int plen)
 
 {
-    unsigned long    sum = 0;
+    uint    sum = 0;
 
     // Duplicate buffer
     char *duplicate = (char *)malloc(blen + 4);
@@ -266,10 +273,8 @@ ulong   bluepoint_crypthash(char *buff, int blen, char *pass, int plen)
         return(0L);
         }
     memcpy(duplicate, buff, blen);
-
     bluepoint_encrypt(duplicate, blen, pass, plen);
     sum = bluepoint_hash(duplicate, blen);
-
     free(duplicate);
     return(sum);
 }

@@ -5,6 +5,11 @@ var mime_table = new Array()
 var mime_rtable = new Array()
 var inited = 0;
 
+window.addEventListener('load', function()
+{
+    mime_init();
+} );
+
 ///////////////////////////////////////////////////////////////////////////
 // Init MIME lookup tables:
 
@@ -318,4 +323,4 @@ function mimeit(s)
 	return escape(ss);
 }
 
-
+// EOF
