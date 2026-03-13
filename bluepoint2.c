@@ -343,10 +343,16 @@ ulong   bluepoint2_hash(char *buff, int blen)
     int     loop;
     char    aa, aa2, aa3;
 
-    for (loop = 0; loop < blen; loop++)
+    for (int loop = 0; loop < blen; loop++)
         {
-        sum ^= (unsigned char)buff[loop];
-        sum ^= ROTATE_LONG_LEFT(sum, 3);
+        unsigned char aa = (unsigned char) buff[loop];
+        sum ^= aa;
+        sum ^= ROTATE_LONG_LEFT(sum, 5);
+        sum += aa;
+        sum ^= ROTATE_LONG_LEFT(sum, 23);
+        sum ^= aa;
+        sum ^= ROTATE_LONG_LEFT(sum, 13);
+        //printf("%x ", sum);
         }
     return sum;
 }
@@ -357,10 +363,18 @@ unsigned long long   bluepoint2_hash64(char *buff, int blen)
     unsigned long long  sum = 0xabababab;
     int     loop;
 
-    for (loop = 0; loop < blen; loop++)
+    for (int loop = 0; loop < blen; loop++)
         {
-        sum ^= (unsigned char)buff[loop];
-        sum ^= ROTATE_LONG_LONG_RIGHT(sum, 10);    /* rotate right */
+        unsigned char aa = (unsigned char) buff[loop];
+        sum ^= aa;
+        sum ^= ROTATE_LONG_LONG_LEFT(sum, 5);
+        sum += aa;
+        sum ^= ROTATE_LONG_LONG_LEFT(sum, 23);
+        sum ^= aa;
+        sum ^= ROTATE_LONG_LONG_LEFT(sum, 13);
+        sum ^= aa;
+        sum ^= ROTATE_LONG_LONG_LEFT(sum, 33);
+        //printf("%x ", sum);
         }
     return sum;
 }

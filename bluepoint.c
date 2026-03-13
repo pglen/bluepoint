@@ -251,8 +251,16 @@ unsigned long long   bluepoint_hash64(const char *buff, int blen)
 
     for (loop = 0; loop < blen; loop++)
         {
-        sum ^= (unsigned char)buff[loop];
-        sum ^= ROTATE_LONG_LONG_RIGHT(sum, 20);    /* rotate right */
+        unsigned char aa = (unsigned char) buff[loop];
+
+        sum ^= aa;
+        sum ^= ROTATE_LONG_LONG_LEFT(sum, 5);
+        sum += aa;
+        sum ^= ROTATE_LONG_LONG_LEFT(sum, 23);
+        sum ^= aa;
+        sum ^= ROTATE_LONG_LONG_LEFT(sum, 13);
+        sum ^= aa;
+        sum ^= ROTATE_LONG_LONG_LEFT(sum, 33);
         }
     return sum;
 }

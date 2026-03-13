@@ -32,8 +32,8 @@
 //#
 //# History:
 //#     Original in PERL and 'C'
-//#     ported to Javascript
-//#
+//#     original version (1) ported to Javascript
+//#     Fri 13.Mar.2026     Cleanup
 //# ----------------------------------------------------------------
 
 //# ----------------------------------------------------------------
