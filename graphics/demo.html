@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>Bluepoint Encryption</title>
+  <script type="text/javascript" src="bluepoint.js"></script>
+  <script type="text/javascript" src="mime.js"></script>
+  <script type="text/javascript" src="support.js"></script><!-- form, uses Bluepoint local encryption --><!-- Copyright BluePoint Software --><!-- This script is provided WITHOUT WARRANTY either expressed or implied. --><!-- You may study, use, modify, and distribute it for any purpose. --><!-- For permission to use the complete package contact BluePoint -->
+  <script language="JavaScript"></script>
+  <script>
+///////////////////////////////////////////////////////////////////////////
+// This is the function that performs form verification. It will be
+invoked
+// from the onSubmit() event handler. The handler should return
+whatever
+// value this function returns.
+function verify(f)
+{
+//abcdefghijklmnopqrstuvwxyz
+//var ss = mime_encode(f.itext.value);
+	if(f.itext.value == "")
+		{
+alert("Emtpy clear text field");
+return false;
+}
+
+if(f.passx.value == "")
+{
+alert("Emtpy Pass");
+
+return false;
+}
+
+var ee = bluepoint_encrypt(f.itext.value, f.passx.value);
+//f.mtext.value = "'" + ss + "'";
+//f.umtext.value = mime_decode(ss);
+f.etext.value = dumphex(ee);
+f.dtext.value = bluepoint_decrypt(ee, f.passx.value);
+//f.htext.value = bluepoint_hash(ee);
+f.hashtext.value = bluepoint_hash(f.itext.value);
+f.chashtext.value = bluepoint_crypthash(f.itext.value, f.passx.value);
+return false;
+}
+  </script>
+</head>
+<body>
+<div style="text-align: center;">
+<table
+ style="text-align: left; width: 1000px; margin-left: auto; margin-right: auto;"
+ border="0" cellpadding="12" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top; width: 370px;"><img
+ style="width: 367px; height: 200px;" alt="" src="Graphic3s.jpg"></td>
+      <td style="vertical-align: top;" background="bg4.jpg"><br>
+      <div style="text-align: justify;">&nbsp; <span
+ style="font-style: italic;">BluePoint</span> Encryption
+is a simple, secure, state of the art block encryption algorithm. It
+requires minimal processing power and has a low memory footprint. The
+algorithm produces an even bit distribution, even when its fed with
+small data or homogenus content. This makes it highly resilient against
+crypt analysis, and an ideal candidate where safe, secure and
+customized encryption is needed. The BluePoint Encryption is available
+in source code format in the following languages: 'C', PHP, Perl,
+JavaScript, ... All the source code ports are cypher text compatible,
+content encoded with one port, can be decoded in other ports.<br>
+      </div>
+      <br>
+      <div style="text-align: center;"><span style="font-weight: bold;">[
+      </span><a style="font-weight: bold;" href="index.html">Home</a><span
+ style="font-weight: bold;"> ]&nbsp; [ </span><a
+ style="font-weight: bold;" href="license.html"><span
+ style="text-decoration: underline;">License</span></a><span
+ style="font-weight: bold;"> ] [ </span><a style="font-weight: bold;"
+ href="study.html">Bit Distribution Study</a><span
+ style="font-weight: bold;"> ] [ </span><a style="font-weight: bold;"
+ href="file:///C:/develop/bluepoint/bluepoint3/demo.html">Demo</a><span
+ style="font-weight: bold;">
+] [ </span><a style="font-weight: bold;" href="down.html">Download</a><span
+ style="font-weight: bold;"> ] [ </span><a style="font-weight: bold;"
+ href="about.html">About</a><span style="font-weight: bold;">&nbsp;
+] </span><br>
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table
+ style="text-align: left; width: 1000px; margin-left: auto; margin-right: auto;"
+ background="bg3.jpg" border="0" cellpadding="12" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><font size="+3">Bluepoint
+Encryption Demo</font><br>
+      <br>
+Below, please find the BluePoint JavaScript Demo. The aim of this page
+is to let you try out BluePoint, rigtht in your browser.<br>
+      <br>
+      <form onsubmit="return verify(this); ">
+        <table style="text-align: left; width: 80%;" border="0"
+ cellpadding="2" cellspacing="2">
+          <tbody>
+            <tr>
+              <td style="vertical-align: top;">Original Text:</td>
+              <td style="vertical-align: top;"><input name="itext"
+ size="64" type="text"> </td>
+              <td style="vertical-align: top;"><br>
+              </td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;">Pass:</td>
+              <td style="vertical-align: top;"><input name="passx"
+ size="32" type="text"> </td>
+              <td style="vertical-align: top;"><br>
+              </td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;">Encrypted text:<br>
+              </td>
+              <td style="vertical-align: top;"><input name="etext"
+ size="84" type="text"></td>
+              <td style="vertical-align: top;"><br>
+              </td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;">Decrypted text:<br>
+              </td>
+              <td style="vertical-align: top;"><input name="dtext"
+ size="64" type="text"></td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;">Cleartext Hash:</td>
+              <td style="vertical-align: top;"><input name="hashtext"
+ size="64" type="text"></td>
+              <td style="vertical-align: top;"><br>
+              </td>
+            </tr>
+            <tr>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;">Cleartext Crypt Hash:</td>
+              <td style="vertical-align: top;"><input name="chashtext"
+ size="64" type="text"></td>
+              <td style="vertical-align: top;"><br>
+              </td>
+            </tr>
+            <tr>
+            </tr>
+            <tr>
+              <td><br>
+              </td>
+              <td><input value="Show Me" type="submit"> </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+      <br>
+      </td>
+    </tr>
+    <tr align="center">
+      <td style="vertical-align: top;"><span style="font-style: italic;">Site
+Copyright by Peter Glen, (c) 2007</span><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+</div>
+<br>
+<br>
+<br>
+</body>
+</html>

@@ -1,0 +1,752 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>Bluepoint Encryption</title>
+</head>
+<body>
+<div style="text-align: center;">
+<table
+ style="text-align: left; width: 1000px; margin-left: auto; margin-right: auto;"
+ border="0" cellpadding="12" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top; width: 370px;"><img
+ style="width: 367px; height: 200px;" alt="" src="Graphic3s.jpg"></td>
+      <td style="vertical-align: top;" background="bg4.jpg"><br>
+      <div style="text-align: justify;">&nbsp; <span
+ style="font-style: italic;">BluePoint</span> Encryption
+is a simple, secure, state of the art block encryption algorithm. It
+requires minimal processing power and has a low memory footprint. The
+algorithm produces an even bit distribution, even when its fed with
+small data or homogenus content. This makes it highly resilient against
+crypt analysis, and an ideal candidate where safe, secure and
+customized encryption is needed. The BluePoint Encryption is available
+in source code format in the following languages: 'C', PHP, Perl,
+JavaScript, ... All the source code ports are cypher text compatible,
+content encoded with one port, can be decoded in other ports.<br>
+      </div>
+      <br>
+      <div style="text-align: center;"><span style="font-weight: bold;">[
+      </span><a style="font-weight: bold;" href="index.html">Home</a><span
+ style="font-weight: bold;"> ]&nbsp; [ </span><a
+ style="font-weight: bold;" href="license.html"><span
+ style="text-decoration: underline;">License</span></a><span
+ style="font-weight: bold;"> ] [ </span><a style="font-weight: bold;"
+ href="study.html">Bit Distribution Study</a><span
+ style="font-weight: bold;"> ] [ </span><a style="font-weight: bold;"
+ href="demo.html">Demo</a><span style="font-weight: bold;">
+] [ </span><a style="font-weight: bold;" href="down.html">Download</a><span
+ style="font-weight: bold;"> ] [ </span><a style="font-weight: bold;"
+ href="about.html">About</a><span style="font-weight: bold;">&nbsp;
+] </span><br>
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table
+ style="text-align: left; width: 1000px; margin-left: auto; margin-right: auto;"
+ background="bg3.jpg" border="0" cellpadding="12" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><font size="+3">Bluepoint
+Encryption Download</font><br>
+      <br>
+In it's simplest form, one can cut and paste the code from below.
+Alternatively, the zipped up archive of the latest version, including
+all documentation, web content and sorces in all languages are avalible
+      <a href="bluepoint.tgz">here</a>. Make sure you read the <a
+ href="license.html">License</a> terms.<br>
+      <br>
+      <span style="color: rgb(0, 51, 0);">//#
+-------------------------------------------------------------------------</span><br
+ style="color: rgb(0, 51, 0);">
+      <span style="color: rgb(0, 51, 0);">//# Bluepoint encryption
+routines.</span><br style="color: rgb(0, 51, 0);">
+      <span style="color: rgb(0, 51, 0);">//#</span><br
+ style="color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#&nbsp;&nbsp;
+How it works:</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#&nbsp;&nbsp;&nbsp;&nbsp;
+Strings are walked chr by char with the loop:</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{</span><br style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+$aa = ord(substr($_[0], $loop, 1));</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+do something with $aa</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+substr($_[0], $loop, 1) = pack("c", $aa);</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#&nbsp;&nbsp;
+Flow:</span><br style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+generate vector</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+generate pass</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+walk forward with password cycling loop</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+walk backwards with feedback encryption</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+walk forward with feedback encryption</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#&nbsp;
+The process guarantees that a single bit change in the original text</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#&nbsp;
+will change every byte in the resulting block.</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#&nbsp;
+The bit propagation is such a high quality, that it beats current</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#&nbsp;
+industrial strength encryptions.</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#&nbsp;
+Please see bit distribution study.</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#
+-------------------------------------------------------------------------</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">#include "stdio.h"</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">#include "string.h"</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">#include "bluepoint.h"</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">#define&nbsp;&nbsp;&nbsp;&nbsp;
+ROTATE_LONG_RIGHT(x, n) (((x) &gt;&gt; (n))&nbsp; | ((x) &lt;&lt; (32 -
+(n))))</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">static&nbsp;
+void&nbsp;&nbsp;&nbsp; encrypt(char *str, int slen, char *pass, int
+plen);</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">static&nbsp;
+void&nbsp;&nbsp;&nbsp; decrypt(char *str, int slen, char *pass, int
+plen);</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">static&nbsp;
+void&nbsp;&nbsp;&nbsp; prep_pass(char *pass, int plen, char *newpass);</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#
+-------------------------------------------------------------------------</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#
+These vars can be set to make a custom encryption:</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">char vector[]&nbsp; =
+"crypt";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+//# influence encryption algorythm</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">int
+passlim&nbsp;&nbsp;&nbsp; =
+32;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+//# maximum key length (bytes)</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">char&nbsp;&nbsp;&nbsp;
+forward&nbsp;&nbsp;&nbsp; =
+0x55;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+//# Constant propagated on forward pass</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">char&nbsp;&nbsp;&nbsp;
+backward&nbsp;&nbsp; =
+0x5a;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+//# Constant propagated on backward pass</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">char&nbsp;&nbsp;&nbsp;
+addend&nbsp;&nbsp;&nbsp;&nbsp; =
+17;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+//# Constant used adding to encrypted values</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#
+-------------------------------------------------------------------------</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#
+These vars can be set show op details</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">int
+verbose&nbsp;&nbsp;&nbsp; =
+0;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+//# Specify this to show working details</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">int functrace&nbsp; =
+0;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+//# Specify this to show function args</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#
+-------------------------------------------------------------------------</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#
+Use: encrypt($str, $password);</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">void&nbsp;&nbsp;&nbsp;
+bluepoint_encrypt(char *buff, int blen, char *pass, int plen)</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">{</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; char
+newpass[2 * passlim];</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; if(plen
+== 0 || blen == 0)</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return;</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp; //
+if(functrace)</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;
+//&nbsp;&nbsp;&nbsp;&nbsp; {</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;
+//&nbsp;&nbsp;&nbsp;&nbsp; printf("bluepoint_encrypt\nbuff=%s\n",
+bluepoint_dumphex(buff, blen));</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;
+//&nbsp;&nbsp;&nbsp;&nbsp; printf("pass=%s\n", bluepoint_dumphex(pass,
+plen) );</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;
+//&nbsp;&nbsp;&nbsp;&nbsp; }</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+prep_pass(pass, plen, newpass);</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+encrypt(buff, blen, newpass, passlim);</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">}</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">//#
+-------------------------------------------------------------------------</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">//# Use:
+bluepoint_decrypt($str, $password);</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">void&nbsp;&nbsp;&nbsp;
+bluepoint_decrypt(char *buff, int blen, char *pass, int plen)</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">{</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; char
+newpass[2 * passlim];</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; if(plen
+== 0 || blen == 0)</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return;</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+//if(functrace)</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+//&nbsp;&nbsp;&nbsp; {</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+//&nbsp;&nbsp;&nbsp; printf("encrypt()\nbuff=%s\n",
+bluepoint_dumphex(buff, blen));</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+//&nbsp;&nbsp;&nbsp; printf("pass=%s\n", bluepoint_dumphex(pass, plen)
+);</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+//&nbsp;&nbsp;&nbsp; }</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+prep_pass(pass, plen, newpass);</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+decrypt(buff, blen, newpass, passlim);</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">}</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">///////////////////////////////////////////////////////////////////////////</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">// Prepare pass</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">void&nbsp;&nbsp;&nbsp;
+prep_pass(char *pass, int plen, char *newpass)</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">{</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; int loop;</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; char
+vec2[passlim];</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; int len
+= strlen(vector);</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+strcpy(vec2, vector);</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+newpass[0] = 0;</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; for(loop
+= 0; loop &lt; passlim / plen + 1; loop++)</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+strcat(newpass, pass);</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+strcat(newpass, "_");</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+newpass[passlim] = 0;</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+//printf("newpass: %s\n", newpass);</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+encrypt(vec2,len, vector, len);</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; //#print
+"e VEC: ";&nbsp; dumpdec($vec2); print "\n";</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+encrypt(newpass, passlim, vec2, len);</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; //#print
+"e PAS2: ";&nbsp; dumpdec($passwd); print "\n";</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">}</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#
+-------------------------------------------------------------------------</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#
+Hash:</span><br style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#
+use: hashvalue = hash($str)</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#
+Implementing the following 'C' code</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#&nbsp;&nbsp;
+define&nbsp;&nbsp;&nbsp;&nbsp; ROTATE_LONG_RIGHT(x, n) (((x) &gt;&gt;
+(n))&nbsp; | ((x) &lt;&lt; (32 - (n))))</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#&nbsp;&nbsp;
+ret_val ^= (unsigned long)*name;</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#&nbsp;&nbsp;
+ret_val&nbsp; = ROTATE_LONG_RIGHT(ret_val,
+10);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* rotate
+right */sub hash</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">long&nbsp;&nbsp;&nbsp;
+bluepoint_hash(char *buff, int blen)</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">{</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+long&nbsp;&nbsp;&nbsp; sum = 0;</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+int&nbsp;&nbsp;&nbsp;&nbsp; loop;</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+char&nbsp;&nbsp;&nbsp; aa, aa2, aa3;</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; for
+(loop = 0; loop &lt; blen; loop++)</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+printf("%c ", buff[loop]);</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+sum ^= buff[loop];</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+//ROTATE_LONG_RIGHT(sum,
+10);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* rotate
+right */</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; return
+sum;</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">}</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">#if 0</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#
+-------------------------------------------------------------------------</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#
+Crypt and hash:</span><br
+ style="font-family: monospace; color: rgb(0, 51, 0);">
+      <span style="font-family: monospace; color: rgb(0, 51, 0);">//#
+use: crypthash = chash($str, "pass")</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">sub chash</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">{</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; my($str,
+$sum);</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; $str =
+encrypt($_[0], $_[1]);</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; $sum =
+hash($str);</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+return($sum);</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">}</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">//#
+-------------------------------------------------------------------------</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">//# Make checksum</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">//# use: sum = chksum($str)</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">sub chksum</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">{</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; my($len,
+$aa, $sum, $loop);</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+$len&nbsp; = length($_[0]);</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; for
+($loop = 0; $loop &lt; $len; $loop++)</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+$aa = ord(substr($_[0], $loop, 1));</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+$sum = $sum&nbsp; + $aa;</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; return
+$sum;</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">}</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">#endif</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">//#
+-------------------------------------------------------------------------</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">//# The following routines
+are internal to this module:</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">void&nbsp;&nbsp;&nbsp;
+encrypt(char *str, int slen, char *pass, int plen)</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">{</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; int
+loop, loop2 = 0;</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; unsigned
+char&nbsp;&nbsp; aa, bb;;</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+//printf( "encrypt str='%s' len=%d pass='%s' plen=%d\n",</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+str, slen, pass, plen);</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; //# Pass
+loop&nbsp; (encrypt)</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; for
+(loop = 0; loop &lt; slen; loop++)</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+aa = str[loop];</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+aa = aa ^ pass[loop2];</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+loop2++;</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if(loop2 &gt;= plen) {loop2 = 0;}&nbsp;&nbsp;&nbsp;&nbsp; //#wrap over</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+str[loop] = aa;</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; //#
+Backward loop (encrypt)</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; bb = 0;</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; for
+(loop = slen-1; loop &gt;= 0; loop--)</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+aa = str[loop];</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+aa = ((aa ^ backward) + addend) + bb;</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+bb = aa;</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+str[loop] = aa;</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; //#
+Forward loop&nbsp; (encrypt)</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; bb = 0;</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; for
+(loop = 0; loop &lt; slen; loop++)</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+aa = str[loop];</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+aa = ((aa ^ forward) + addend) + bb;</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+bb = aa;</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+str[loop] = aa;</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">}</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">//#
+-------------------------------------------------------------------------</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">//# Internal to this module:</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">void&nbsp;&nbsp;&nbsp;
+decrypt(char *str, int slen, char *pass, int plen)</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">{</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; int
+loop, loop2 = 0;</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; unsigned
+char&nbsp;&nbsp; aa, bb, cc;</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+//printf( "decrypt(inp) str=%s len=%d pass=%s plen=%d\n",</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+str, slen, pass, plen);</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; //#
+Forward loop (decrypt)</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; cc = 0;</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; for
+(loop = 0; loop &lt; slen; loop++)</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+bb = cc;</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+aa = str[loop];</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+cc = aa;</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+aa = ((aa - bb) - addend) ^ forward;</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+str[loop] = aa;</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; //#
+Backward loop&nbsp; (decrypt)</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; cc = 0;</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; for
+(loop = slen-1; loop &gt;= 0; loop--)</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+bb = cc;</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+aa = str[loop];</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+cc = aa;</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+aa = ((aa - bb) - addend)&nbsp; ^ backward;</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+str[loop] = aa;</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; //# Pass
+loop&nbsp;&nbsp; (decrypt)</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; for
+(loop = 0; loop &lt; slen; loop++)</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+aa = str[loop];</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+aa = aa ^ pass[loop2];</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+loop2++; if(loop2 &gt;= plen) {loop2 = 0;}&nbsp;&nbsp;&nbsp;&nbsp;
+//#wrap over</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+str[loop] = aa;</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; //#print
+"pl_decrypt(out) out2=$out2\n";</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">}</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">//#
+-------------------------------------------------------------------------</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">//# Use:
+bluepoint_dumphex($str)</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">char buff[256];</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">char
+*bluepoint_dumphex(char *str, int len)</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">{</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; buff[0]
+= 0;</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; int loop
+= 0, pos = 0;</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; for
+(loop = 0; loop &lt; len; loop++)</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+pos += sprintf(buff + pos, "-%02x", ( unsigned char)str[loop]);</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if(pos &gt;= sizeof(buff) - 8)</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+break;</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+return(buff);</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">}</span><br
+ style="font-family: monospace;">
+      <br>
+      </td>
+    </tr>
+    <tr align="center">
+      <td style="vertical-align: top;"><span style="font-style: italic;">Site
+Copyright by Peter Glen, (c) 2007</span><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+</div>
+<br>
+<br>
+<br>
+</body>
+</html>

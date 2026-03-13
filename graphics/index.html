@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>Bluepoint Encryption</title>
+</head>
+<body>
+<div style="text-align: center;">
+<table
+ style="text-align: left; width: 1000px; margin-left: auto; margin-right: auto;"
+ border="0" cellpadding="12" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top; width: 370px;"><img
+ style="width: 367px; height: 200px;" alt="" src="Graphic3s.jpg"></td>
+      <td style="vertical-align: top;" background="bg4.jpg"><br>
+      <div style="text-align: justify;">&nbsp; <span
+ style="font-style: italic;">BluePoint</span> Encryption
+is a simple, secure, state of the art block encryption algorithm. It
+requires minimal processing power and has a low memory footprint. The
+algorithm produces an even bit distribution, even when its fed with
+small data or homogenus content. This makes it highly resilient against
+crypt analysis, and an ideal candidate where safe, secure and
+customized encryption is needed. The BluePoint Encryption is available
+in source code format in the following languages: 'C', PHP, Perl,
+JavaScript, ... All the source code ports are cypher text compatible,
+content encoded with one port, can be decoded in other ports.<br>
+      </div>
+      <br>
+      <div style="text-align: center;"><span style="font-weight: bold;">[
+      </span><a style="font-weight: bold;" href="index.html">Home</a><span
+ style="font-weight: bold;"> ]&nbsp; [ </span><a
+ style="font-weight: bold;" href="license.html"><span
+ style="text-decoration: underline;">License</span></a><span
+ style="font-weight: bold;"> ] [ </span><a style="font-weight: bold;"
+ href="study.html">Bit Distribution Study</a><span
+ style="font-weight: bold;"> ] [ </span><a style="font-weight: bold;"
+ href="demo.html">Demo</a><span style="font-weight: bold;">
+] [ </span><a style="font-weight: bold;" href="down.html">Download</a><span
+ style="font-weight: bold;"> ] [ </span><a style="font-weight: bold;"
+ href="about.html">About</a><span style="font-weight: bold;">&nbsp;
+] </span><br>
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table
+ style="text-align: left; width: 1000px; margin-left: auto; margin-right: auto;"
+ background="bg3.jpg" border="0" cellpadding="12" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><font size="+3">Bluepoint
+Encryption</font><br>
+      <br>
+Bluepoint encryption routines.<br>
+      <br>
+How it works:<br>
+      <br>
+&nbsp;&nbsp;&nbsp; <span style="font-family: monospace;">The string
+(memory area) is walked char by char with the loop:</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+$aa = ord(substr($_[0], $loop, 1));</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+do something with $aa</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+substr($_[0], $loop, 1) = pack("c", $aa);</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br>
+      <br>
+The walk is done three times, <br>
+      <br>
+      <div style="margin-left: 40px;">walk forward with password
+cycling loop<br>
+walk backwards with feedback encryption<br>
+walk forward with feedback encryption<br>
+      </div>
+      <br>
+On decryption, the the walk is executed in the opposite order:<br>
+      <br>
+      <div style="margin-left: 40px;">walk forward with feedback
+encryption<br>
+walk backwards with feedback encryption<br>
+walk forward with password cycling loop<br>
+      <br>
+      </div>
+&nbsp; The forward and backward walk are interlaced with linear and
+non-linear operations, which gives the encryption algorithm its
+strength and quality. The interlace is also alternated between the
+backward and forward pass. The password cycling pass is done with an
+encrypted version of the pass, assuring the pass itself has a high
+quality bit distribution.<br>
+      <br>
+&nbsp; In the code, the pass cycling is limited to 32 characters. This
+renders the encryption algorhytm industrial strenght. Raising that to
+64 characters (512-bits) will make it&nbsp; unbreakable today, raising
+that to 128 characters (1024-bits) will make it&nbsp; unbreakable in
+the future. However, this is left as an excersize to the reader, so the
+export restriction does not apply to the code basis.<br>
+      <div style="margin-left: 40px;"><br>
+      </div>
+&nbsp; The overall Flow of events inside the algorithm:<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generate vector<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generate pass<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; walk forward with password
+cycling loop<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; walk backwards with feedback
+encryption<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; walk forward with feedback
+encryption<br>
+      <br>
+&nbsp;The process guarantees that a single bit change in the original
+text will change every byte in the resulting block.<br>
+      <br>
+&nbsp;The bit propagation is such a high quality, that it beats current
+industrial strength encryptions.<br>
+      <br>
+&nbsp;Please see bit distribution study.<br>
+      </td>
+    </tr>
+    <tr align="center">
+      <td style="vertical-align: top;"><span style="font-style: italic;">Site
+Copyright by Peter Glen, (c) 2007</span><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+</div>
+<br>
+<br>
+<br>
+</body>
+</html>

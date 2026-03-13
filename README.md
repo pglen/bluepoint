@@ -1,4 +1,4 @@
-#                             README
+#  README
 ## The bluepoint algorythm
 
  This directory contains the bluepoint algorithm and test suite.
@@ -11,6 +11,8 @@ The bluepoint version 3, (the virtual machine version) is under development,
 close to completion.
 
     Version 3 might be quantum resistant;
+
+![Screen Shot](graphics/screen.png)
 
 #### Bluepoint 3 data flow:
 

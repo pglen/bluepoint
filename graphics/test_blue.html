@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <script type="text/javascript" src="bluepoint.js"></script>
+  <script type="text/javascript" src="mime.js"></script>
+  <script type="text/javascript" src="support.js"></script><!-- form, uses Bluepoint local encryption                          --><!-- Copyright BluePoint Software                                           --><!-- This script is provided WITHOUT WARRANTY either expressed or implied.  --><!-- You may study, use, modify, and distribute it for any purpose.         --><!-- For permission to use the complete package contact BluePoint           -->
+  <script language="JavaScript">
+
+///////////////////////////////////////////////////////////////////////////
+// This is the function that performs form verification.  It will be invoked
+// from the onSubmit() event handler.  The handler should return whatever
+// value this function returns.
+
+function verify(f)
+
+{
+//abcdefghijklmnopqrstuvwxyz
+
+	//var 	ss = mime_encode(f.itext.value);
+	var	ee = bluepoint_encrypt(f.itext.value, f.passx.value);
+
+	//f.mtext.value = "'" + ss + "'";
+	//f.umtext.value = mime_decode(ss);
+
+	f.etext.value = dumphex(ee);
+	f.dtext.value = bluepoint_decrypt(ee, f.passx.value);
+
+	//f.htext.value = bluepoint_hash(ee);
+
+	f.hashtext.value = bluepoint_hash(f.itext.value);
+	f.chashtext.value = bluepoint_crypthash(f.itext.value, f.passx.value);
+
+	return false;
+}
+
+  </script>
+
+
+  <title>TestBluePoint</title>
+</head>
+<body onload="display_time_in_status_line();" style="" link="#0000ff"
+ vlink="#800080">
+<span style="font-weight: bold;"><font size="+3">BluePoint Encryption
+Test Form<br>
+<br>
+</font></span>
+<form onsubmit="return verify(this); ">
+  <table style="text-align: left; width: 80%;" border="0"
+ cellpadding="2" cellspacing="2">
+    <tbody>
+      <tr>
+        <td style="vertical-align: top;">Original Text:</td>
+        <td style="vertical-align: top;"><input name="itext" size="64"
+ type="text"> </td>
+        <td style="vertical-align: top;"><br>
+        </td>
+      </tr>
+      <tr>
+        <td style="vertical-align: top;">Pass:</td>
+        <td style="vertical-align: top;"><input name="passx" size="32"
+ type="text"> </td>
+        <td style="vertical-align: top;"><br>
+        </td>
+      </tr>
+        <td style="vertical-align: top;">Encrypted text:<br>
+        </td>
+        <td style="vertical-align: top;"><input name="etext" size="84"
+ type="text"></td>
+        <td style="vertical-align: top;"><br>
+        </td>
+      </tr>
+      <tr>
+        <td style="vertical-align: top;">Decrypted text:<br>
+        </td>
+        <td style="vertical-align: top;"><input name="dtext" size="64"
+ type="text"></td>
+      </tr>
+
+      <tr>
+        <td style="vertical-align: top;">Cleartext Hash:</td>
+        <td style="vertical-align: top;"><input name="hashtext" size="64"
+ type="text"></td>
+        <td style="vertical-align: top;"><br>
+        </td>
+      </tr>
+      <tr>
+
+      <tr>
+        <td style="vertical-align: top;">Cleartext Crypt Hash:</td>
+        <td style="vertical-align: top;"><input name="chashtext" size="64"
+ type="text"></td>
+        <td style="vertical-align: top;"><br>
+        </td>
+      </tr>
+      <tr>
+
+      <tr>
+        <td><br>
+        </td>
+        <td><input type="submit"> </td>
+      </tr>
+    </tbody>
+  </table>
+</form>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; <br>
+<p><br>
+</p>
+</body>
+</html>

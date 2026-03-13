@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>Bluepoint Encryption</title>
+</head>
+<body>
+<div style="text-align: center;">
+<table
+ style="text-align: left; width: 1000px; margin-left: auto; margin-right: auto;"
+ border="0" cellpadding="12" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top; width: 370px;"><img
+ style="width: 367px; height: 200px;" alt="" src="Graphic3s.jpg"></td>
+      <td style="vertical-align: top;" background="bg4.jpg"><br>
+      <div style="text-align: justify;">&nbsp; <span
+ style="font-style: italic;">BluePoint</span> Encryption
+is a simple, secure, state of the art block encryption algorithm. It
+requires minimal processing power and has a low memory footprint. The
+algorithm produces an even bit distribution, even when its fed with
+small data or homogenus content. This makes it highly resilient against
+crypt analysis, and an ideal candidate where safe, secure and
+customized encryption is needed. The BluePoint Encryption is available
+in source code format in the following languages: 'C', PHP, Perl,
+JavaScript, ... All the source code ports are cypher text compatible,
+content encoded with one port, can be decoded in other ports.<br>
+      </div>
+      <br>
+      <div style="text-align: center;"><span style="font-weight: bold;">[
+      </span><a style="font-weight: bold;" href="index.html">Home</a><span
+ style="font-weight: bold;"> ]&nbsp; [ </span><a
+ style="font-weight: bold;" href="license.html"><span
+ style="text-decoration: underline;">License</span></a><span
+ style="font-weight: bold;"> ] [ </span><a style="font-weight: bold;"
+ href="study.html">Bit Distribution Study</a><span
+ style="font-weight: bold;"> ] [ </span><a style="font-weight: bold;"
+ href="demo.html">Demo</a><span style="font-weight: bold;">
+] [ </span><a style="font-weight: bold;" href="down.html">Download</a><span
+ style="font-weight: bold;"> ] [ </span><a style="font-weight: bold;"
+ href="about.html">About</a><span style="font-weight: bold;">&nbsp;
+] </span><br>
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table
+ style="text-align: left; width: 1000px; margin-left: auto; margin-right: auto;"
+ background="bg3.jpg" border="0" cellpadding="12" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><font size="+3">Bluepoint
+Encryption Study</font><br>
+      <br>
+&nbsp;&nbsp; In testing Bluepoint, one of the exceptional properties we
+found was that in the clear text change, the change propagated to every
+byte of the cyphertext, with no predictable bit distribution. We fed
+the Bluepoint algorithm various clear text samples and examined the
+cypher text. Below, is what we found.<br>
+      <br>
+Original Context, this is what we used as a starting point:<br>
+      <br>
+      <span style="font-family: monospace;">org=aaaaa&nbsp; pas=1234</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">ENCRYPTED:</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">-9c-7b-db-24-52</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">END ENCRYPTED</span><br>
+      <br>
+Changed (added) one byte clear text to the Original Context, cypher
+text has changed completely:<br>
+      <br>
+      <span style="font-family: monospace;">org=aaaaaa&nbsp; pas=1234</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">ENCRYPTED:</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">-d6-ff-a9-04-c4-bc</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">END ENCRYPTED</span><br>
+      <br>
+Changed (added) one byte to the password of Previous&nbsp; Context,
+cypher text has changed completely:<br>
+      <br>
+      <span style="font-family: monospace;">org=aaaaaa&nbsp; pas=12345</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">ENCRYPTED:</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">-d8-b3-af-d4-ae-70</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">END ENCRYPTED</span><br>
+      <br>
+Changed one bit of the password of Previous Context, cypher text has
+changed completely:<br>
+      <br>
+      <span style="font-family: monospace;">org='aaaaaa'&nbsp;
+pas='12345'<br>
+ENCRYPTED:<br>
+-f4-97-93-02-2a-0c<br>
+END ENCRYPTED<br>
+      </span><br>
+Changed one bit of the clear text of Previous Context, cypher text has
+changed completely:&nbsp; (note a=0x41 b=0x42)<br>
+      <br>
+      <span style="font-family: monospace;">org='baaaaa'&nbsp;
+pas='12345'<br>
+ENCRYPTED:<br>
+-94-8b-12-f1-08-c7<br>
+END ENCRYPTED<br>
+      <br>
+      </span>Moved the one bit change of the clear text of Previous
+Context, cypher text has changed completely: <br>
+      <br>
+      <span style="font-family: monospace;">org='aaaaab'&nbsp;
+pas='12345'</span><br style="font-family: monospace;">
+      <span style="font-family: monospace;">ENCRYPTED:</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">-d4-ed-39-b5-60-35</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">END ENCRYPTED</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;"></span><br>
+Changed one letter casing (see: Jumped) of the clear text, the cypher
+text has changed completely:<br>
+      <br>
+      <span style="font-family: monospace;">org='The quick brown
+Squirrel Jumped over the Fat Cat'&nbsp; pas='1234'</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">ENCRYPTED:</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">-d6-03-a2-43-c0-26-33-ec-de-18-f6-7c-3f-73-fa-4f-bd-1a-34-8b-a0-2e-f3-e0-8c-64-2e-f9-5a-98-7e-c3-af-d7-9a-ad-21
+-4f-ba-da-d8-ab-60-6b-93-dd-8f-7c</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">END ENCRYPTED</span><br
+ style="font-family: monospace;">
+      <br style="font-family: monospace;">
+      <span style="font-family: monospace;">org='The quick brown
+Squirrel jumped over the Fat Cat'&nbsp; pas='1234'</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">ENCRYPTED:</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">-ca-95-f8-02-ac-b7-59-a5-e9-7d-87-92-f5-2e-56-ce-91-98-f7-e7-20-22-66-53-ee-b4-38-3b-82-9d-1f-f7-36-a8-b4-f0-89
+-5c-5c-0f-7f-80-1b-c2-7e-3b-5b-f5</span><br
+ style="font-family: monospace;">
+      <span style="font-family: monospace;">END ENCRYPTED</span><br
+ style="font-family: monospace;">
+      <br>
+Bit Distribution:<br>
+      <br>
+      <br>
+      <br>
+Conclusion:<br>
+      <br>
+&nbsp;&nbsp; When we inputted monolithic text into the BluePoint
+Encryption
+Algorithm, the cypher text varied greatly when we changed ONE byte in
+the clear text, and varied just as greatly&nbsp; when we changed ONE
+bit. This makes the BluePoint algorythm resistive to crypographic
+analisies.<br>
+      <br>
+      </td>
+    </tr>
+    <tr align="center">
+      <td style="vertical-align: top;"><span style="font-style: italic;">Site
+Copyright by Peter Glen, (c) 2007</span><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+</div>
+<br>
+<br>
+<br>
+</body>
+</html>

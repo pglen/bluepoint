@@ -6,8 +6,10 @@
 <link rel='icon' href='data:;base64,iVBORw0KGgo='>
 </head>
 
+<script type="text/javascript" src="support.js"></script>
 <script type="text/javascript" src="bluepoint.js"></script>
 <script>
+
     window.addEventListener('load', function()
     {
     org = "aaaa"
@@ -15,22 +17,31 @@
     const orgOutput = document.getElementById('org');
     orgOutput.innerHTML = "org: " + org
 
+    const passOutput = document.getElementById('pass');
     const textOutput = document.getElementById('txt');
-    eeee = bluepoint_encrypt(org, "1234");
+    eeee = bluepoint_encrypt(org, passOutput.innerHTML);
     const binOutput = document.getElementById('bin');
     binOutput.innerHTML = "enc: " + dumphex(eeee);
-    dddd = bluepoint_decrypt(eeee,  "1234");
+    dddd = bluepoint_decrypt(eeee,  passOutput.innerHTML);
     textOutput.innerHTML = "dec: " + dddd;
+    display_time_in_status_line();
+
     } );
 </script>
 <body>
-<div id=org> Hello
-</div>
+<center>
+<h1> Bluepoint Test Page</h1>
+<table>
+<tr><td>
+<img src=graphics/bitmap.png>
+<td width=10%>
+<td>
+<div id=org> Hello </div>
+pass: <div id=pass style="display:inline;"> 1234</div>
+<div id=bin> Hello</div>
+<div id=txt> Hello</div>
 
-<div id=bin> Hello
-</div>
-
-<div id=txt> Hello
-</div>
+<tr><td align=center colspan=3>
+<br><div id=status> Status Line </div>
 
 </body>
